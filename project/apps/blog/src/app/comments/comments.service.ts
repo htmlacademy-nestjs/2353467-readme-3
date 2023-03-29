@@ -14,7 +14,6 @@ export class CommentsService {
   public async create(comment: CreateCommentDto) {
     const commentEntity = await new CommentEntity(comment)
     return this.commentsRepository.create(commentEntity);
-
   }
 
   public async destroy(id: string) {

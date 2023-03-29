@@ -27,7 +27,7 @@ export class CommentsController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Comment successfully remove.',
+    description: 'Comment remove.',
   })
   @Delete(':id')
   public async destroy(@Param('id') id: string) {
@@ -40,8 +40,8 @@ export class CommentsController {
     description: 'List comments.',
   })
   @Get(':postID')
-  public async list(@Param('postID') id: string) {
-    return await this.commentService.list(id);
+  public async list(@Param('postID') postID: string) {
+    return await this.commentService.list(postID);
   }
 
 }

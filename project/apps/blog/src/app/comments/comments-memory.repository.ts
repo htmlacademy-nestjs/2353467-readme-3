@@ -1,9 +1,9 @@
 import { CRUDRepository } from '@project/util/util-types';
 import { Comment } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
-import crypto from "crypto";
 import { CommentEntity } from './comments.entity';
 import dayjs from 'dayjs';
+import crypto from "crypto";
 
 @Injectable()
 export class CommentsMemoryRepository implements CRUDRepository<CommentEntity, string, Comment> {
@@ -11,9 +11,7 @@ export class CommentsMemoryRepository implements CRUDRepository<CommentEntity, s
 
   public async create(item: CommentEntity): Promise<Comment> {
     const entry = { ...item.toObject(), _id: crypto.randomUUID(), createdDate: dayjs().unix() };
-
     this.repository.push(entry);
-
     return entry;
   }
 
