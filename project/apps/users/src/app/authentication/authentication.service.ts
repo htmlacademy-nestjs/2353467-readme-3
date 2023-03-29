@@ -23,21 +23,17 @@ export class AuthenticationService {
       role: UserRole.User,
       avatar: '',
       dateBirth: dayjs(dateBirth).toDate(),
-      passwordHash: ''
+      passwordHash: '',
     };
 
-    const existUser = await this.blogUserRepository
-      .findByEmail(email);
+    const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (existUser) {
       throw new ConflictException(AUTH_USER_EXISTS);
     }
 
-    const userEntity = await new BlogUserEntity(newUser)
-      .setPassword(password)
-
-    return this.blogUserRepository
-      .create(userEntity);
+    const userEntity = await new BlogUserEntity(newUser).setPassword(password);
+    return this.blogUserRepository.create(userEntity);
   }
 
   public async verifyUser(credentials: LoginUserDto) {
