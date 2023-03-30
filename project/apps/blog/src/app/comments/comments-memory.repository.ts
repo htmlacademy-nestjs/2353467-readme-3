@@ -24,7 +24,7 @@ export class CommentsMemoryRepository implements CRUDRepository<CommentEntity, s
   }
 
   public async destroy(id: string): Promise<void> {
-    this.repository = this.repository.filter(user => user._id !== id);
+    this.repository = this.repository.filter(item => item._id !== id);
   }
 
   public async update(id: string, commentData: CommentEntity): Promise<Comment> {

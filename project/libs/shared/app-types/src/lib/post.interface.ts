@@ -5,12 +5,13 @@ export interface Post {
   title: string;
   tags: string[];
   type: PostType;
-  createdAt: string;
-  updatedAt: string;
+  userID: string;
+  createdDate: number;
+  updatedDate: number;
 }
 
 export interface PostText extends Post {
-  preview: string;
+  anonce: string;
 }
 
 export interface PostVideo extends Post {
