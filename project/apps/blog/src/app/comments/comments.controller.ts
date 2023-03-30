@@ -19,9 +19,8 @@ export class CommentsController {
     description: 'Comment successfully add.',
   })
   @Post()
-  public async create(@Body() commentData: CreateCommentDto) {
-    const comment = await this.commentService.create(commentData);
-
+  public create(@Body() commentData: CreateCommentDto) {
+    const comment = this.commentService.create(commentData);
     return fillObject(CommentRdo, comment);
   }
 
@@ -30,8 +29,9 @@ export class CommentsController {
     description: 'Comment remove.',
   })
   @Delete(':id')
-  public async destroy(@Param('id') id: string) {
-    await this.commentService.destroy(id);
+  public destroy(@Param('id') id: string) {
+    this.commentService.destroy(id);
+    return true;
   }
 
   @ApiResponse({
@@ -41,7 +41,8 @@ export class CommentsController {
   })
   @Get(':postID')
   public async list(@Param('postID') postID: string) {
-    return await this.commentService.list(postID);
+    const comments = await this.commentService.list(postID);
+    return comments.map(item => fillObject(CommentRdo, item));
   }
 
 }

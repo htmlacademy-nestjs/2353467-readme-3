@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Comment } from "@project/shared/app-types";
 
 export class CommentEntity implements Comment {
@@ -17,6 +18,11 @@ export class CommentEntity implements Comment {
 
   public toObject() {
     return { ...this };
+  }
+
+  public setCreateDate() {
+    this.createdDate = dayjs().unix();
+    return this;
   }
 
 }

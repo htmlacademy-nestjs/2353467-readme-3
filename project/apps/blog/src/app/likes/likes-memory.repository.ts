@@ -7,17 +7,18 @@ import crypto from "crypto";
 export class LikesMemoryRepository {
   private repository: Like[] = [];
 
-  public async create(item: LikeEntity): Promise<Like> {
-    const entry = { ...item.toObject(), _id: crypto.randomUUID() };
+  public async create(likeData: LikeEntity): Promise<Like> {
+    const entry = { ...likeData.toObject(), _id: crypto.randomUUID() };
     this.repository.push(entry);
     return entry;
   }
 
-  public async destroy(likeID: string): Promise<void> {
-    this.repository = this.repository.filter(like => like._id !== likeID);
+  public async destroy(id: string): Promise<void> {
+    this.repository = this.repository.filter(item => item._id !== id);
   }
 
   public async count(postID: string): Promise<number> {
-    return this.repository.filter(like => like.postID === postID).length;
+    const likes = this.repository.filter(item => item.postID === postID);
+    return likes.length;
   }
 }

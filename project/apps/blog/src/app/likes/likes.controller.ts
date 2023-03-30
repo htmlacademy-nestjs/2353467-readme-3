@@ -16,9 +16,8 @@ export class LikesController {
     description: 'Like successfully add.',
   })
   @Post()
-  public async create(@Body() likeData: CreateLikeDto) {
-    await this.likesService.create(likeData);
-    return true;
+  public create(@Body() likeData: CreateLikeDto) {
+    return this.likesService.create(likeData);
   }
 
   @ApiResponse({
@@ -26,8 +25,9 @@ export class LikesController {
     description: 'Like remove.',
   })
   @Delete(':id')
-  public async destroy(@Param('id') id: string) {
-    await this.likesService.destroy(id);
+  public destroy(@Param('id') id: string) {
+    this.likesService.destroy(id);
+    return true;
   }
 
   @ApiResponse({
@@ -35,8 +35,8 @@ export class LikesController {
     description: 'Count likes post\'s.',
   })
   @Get(':postID')
-  public async count(@Param('postID') postID: string) {
-    return await this.likesService.count(postID);
+  public count(@Param('postID') postID: string) {
+    return this.likesService.count(postID);
   }
 
 }

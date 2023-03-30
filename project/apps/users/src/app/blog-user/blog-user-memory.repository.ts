@@ -11,7 +11,6 @@ export class BlogUserMemoryRepository implements CRUDRepository<BlogUserEntity, 
   public async create(item: BlogUserEntity): Promise<User> {
     const entry = { ...item.toObject(), _id: crypto.randomUUID() };
     this.repository.push(entry);
-
     return entry;
   }
 

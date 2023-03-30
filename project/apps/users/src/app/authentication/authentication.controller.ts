@@ -20,8 +20,8 @@ export class AuthenticationController {
     description: 'The new user has been successfully created.',
   })
   @Post('register')
-  public async create(@Body() userData: CreateUserDto) {
-    const user = await this.authService.register(userData);
+  public create(@Body() userData: CreateUserDto) {
+    const user = this.authService.register(userData);
 
     return fillObject(UserRdo, user);
   }
@@ -37,8 +37,8 @@ export class AuthenticationController {
   })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() credentials: LoginUserDto) {
-    const user = await this.authService.verifyUser(credentials);
+  public login(@Body() credentials: LoginUserDto) {
+    const user = this.authService.verifyUser(credentials);
     return fillObject(LoggedUserRdo, user);
   }
 
@@ -48,8 +48,8 @@ export class AuthenticationController {
     description: 'User found'
   })
   @Get(':id')
-  public async show(@Param('id') id: string) {
-    const user = await this.authService.getUser(id);
+  public show(@Param('id') id: string) {
+    const user = this.authService.getUser(id);
     return fillObject(UserRdo, user);
   }
 }

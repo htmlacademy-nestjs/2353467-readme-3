@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LikesMemoryRepository } from './likes-memory.repository';
 import { LikeEntity } from './likes.entity';
 import { CreateLikeDto } from './dto/create-like.dto';
+import { Like } from '@project/shared/app-types';
 
 @Injectable()
 export class LikesService {
@@ -10,16 +11,16 @@ export class LikesService {
     private readonly likesRepository: LikesMemoryRepository
   ) { }
 
-  public async create(like: CreateLikeDto) {
-    const likeEntity = await new LikeEntity(like)
+  public create(likeData: CreateLikeDto): Promise<Like>  {
+    const likeEntity = new LikeEntity(likeData)
     return this.likesRepository.create(likeEntity);
   }
 
-  public async destroy(id: string) {
-    return this.likesRepository.destroy(id);
+  public destroy(id: string) {
+    this.likesRepository.destroy(id);
   }
 
-  public async count(postID: string) {
+  public async count(postID: string): Promise<number> {
     return await this.likesRepository.count(postID);
   }
 }

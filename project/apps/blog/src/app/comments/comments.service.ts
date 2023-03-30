@@ -11,18 +11,17 @@ export class CommentsService {
     private readonly commentsRepository: CommentsMemoryRepository
   ) { }
 
-  public async create(comment: CreateCommentDto) {
-    const commentEntity = await new CommentEntity(comment)
+  public create(commentData: CreateCommentDto) {
+    const commentEntity = new CommentEntity(commentData).setCreateDate();
     return this.commentsRepository.create(commentEntity);
   }
 
-  public async destroy(id: string) {
-    await this.commentsRepository.destroy(id);
+  public destroy(id: string): void {
+    this.commentsRepository.destroy(id);
   }
 
   public async list(postID: string) {
-    const comments = await this.commentsRepository.list(postID);
-    return comments.map(comment => new CommentEntity(comment));
+    return await this.commentsRepository.list(postID);
   }
 
 }
