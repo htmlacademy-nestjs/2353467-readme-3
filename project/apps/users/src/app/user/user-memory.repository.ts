@@ -1,11 +1,11 @@
 import { CRUDRepository } from '@project/util/util-types';
-import { BlogUserEntity } from './blog-user.entity';
+import { BlogUserEntity } from './user.entity';
 import { User } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import crypto from "crypto";
 
 @Injectable()
-export class BlogUserMemoryRepository implements CRUDRepository<BlogUserEntity, string, User> {
+export class UserMemoryRepository implements CRUDRepository<BlogUserEntity, string, User> {
   private repository: User[] = [];
 
   public async create(item: BlogUserEntity): Promise<User> {

@@ -3,7 +3,7 @@ import { genSalt, hash, compare } from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
-export class BlogUserEntity implements User {
+export class UserEntity implements User {
   public _id: string;
   public avatar: string;
   public dateBirth: Date;
@@ -32,7 +32,7 @@ export class BlogUserEntity implements User {
     this.role = blogUser.role;
   }
 
-  public async setPassword(password: string): Promise<BlogUserEntity> {
+  public async setPassword(password: string): Promise<UserEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);
     return this;
