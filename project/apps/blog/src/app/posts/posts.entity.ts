@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { Post, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo } from "@project/shared/app-types";
+import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo } from "@project/shared/app-types";
 
-class PostEntity implements Post {
+class BasePostEntity implements BasePost {
 
   public _id: string;
   public title: string;
@@ -11,7 +11,7 @@ class PostEntity implements Post {
   public createdDate: number;
   public updatedDate: number;
 
-  constructor(post: Post) {
+  constructor(post: BasePost) {
     this._id = post._id;
     this.title = post.title;
     this.tags = post.tags;
@@ -37,7 +37,7 @@ class PostEntity implements Post {
 
 }
 
-export class PostTextEntity extends PostEntity {
+export class PostTextEntity extends BasePostEntity {
   public anonce: string;
 
   constructor(post: PostText) {
@@ -46,7 +46,7 @@ export class PostTextEntity extends PostEntity {
   }
 }
 
-export class PostVideoEntity extends PostEntity {
+export class PostVideoEntity extends BasePostEntity {
   public video: string;
 
   constructor(post: PostVideo) {
@@ -55,7 +55,7 @@ export class PostVideoEntity extends PostEntity {
   }
 }
 
-export class PostPhoteEntity extends PostEntity {
+export class PostPhotoEntity extends BasePostEntity {
   public photo: string;
 
   constructor(post: PostPhoto) {
@@ -64,7 +64,7 @@ export class PostPhoteEntity extends PostEntity {
   }
 }
 
-export class PostQuoteEntity extends PostEntity {
+export class PostQuoteEntity extends BasePostEntity {
   public quote: string;
 
   constructor(post: PostQuote) {
@@ -73,7 +73,7 @@ export class PostQuoteEntity extends PostEntity {
   }
 }
 
-export class PostLinkEntity extends PostEntity {
+export class PostLinkEntity extends BasePostEntity {
   public link: string;
 
   constructor(post: PostLink) {
@@ -81,3 +81,10 @@ export class PostLinkEntity extends PostEntity {
     this.link = post.link;
   }
 }
+
+export type PostEntity =
+  | PostTextEntity
+  | PostPhotoEntity
+  | PostVideoEntity
+  | PostQuoteEntity
+  | PostLinkEntity;

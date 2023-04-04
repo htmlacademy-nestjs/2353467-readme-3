@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { PostType } from "libs/shared/app-types/src/lib/post-type.enum";
+import { PostType } from "@project/shared/app-types";
 
 class BasePostDto {
 
@@ -52,7 +52,7 @@ export class CreatePostQuoteDto extends BasePostDto {
   public quote: string;
 }
 
-export class CreatePostLinkeDto extends BasePostDto {
+export class CreatePostLinkDto extends BasePostDto {
   @ApiProperty({
     description: 'Link',
   })
@@ -65,4 +65,4 @@ export type CreatePostDto =
   | CreatePostVideoDto
   | CreatePostPhotoDto
   | CreatePostQuoteDto
-  | CreatePostLinkeDto;
+  | CreatePostLinkDto;

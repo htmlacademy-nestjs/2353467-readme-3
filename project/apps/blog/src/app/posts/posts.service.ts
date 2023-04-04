@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PostTextEntity } from './posts.entity';
-import { Post } from '@project/shared/app-types';
-import { CreatePostDto } from './dto/create-post.dto';
+import { IPost } from '@project/shared/app-types';
 import { PostsMemoryRepository } from './posts-memory.repository';
+import { PostConnectionsTypes } from "./posts-connections-types";
 
 @Injectable()
 export class PostsService {
@@ -11,22 +10,39 @@ export class PostsService {
     private readonly postsRepository: PostsMemoryRepository
   ) { }
 
-  public all() {
-
+  private getConnectionType(type) {
+    return PostConnectionsTypes.find(connectionType => connectionType.type === type);
   }
 
-  public create(postData: CreatePostDto): Promise<Post>  {
-    const postEntity = new PostTextEntity(postData)
-    return this.postsRepository.create(postEntity);
+  // Get all posts
+
+  public all(params): Promise<IPost[]>  {
+    return this.postsRepository.all(params);
   }
 
-  public update(id: string, postData: CreatePostDto) {
-    const postEntity = new PostTextEntity(postData);
+  // Create post
+
+  public async create(postData): Promise<IPost>  {
+    const connectionType = this.getConnectionType(postData.type);
+    const postEntity = new connectionType.entity(postData)
+      .setCreatedDate()
+      .setUpdatedDate();
+    return await this.postsRepository.create(postEntity);
+  }
+
+  // Update post
+
+  public update(id: string, postData) {
+    const connectionType = this.getConnectionType(postData.type);
+    const postEntity = new connectionType.entity(postData)
+      .setUpdatedDate();
     return this.postsRepository.update(id, postEntity);
   }
 
-  public destroy() {
+  // Remove post
 
+  public destroy(id: string) {
+    this.postsRepository.destroy(id);
   }
 
 }

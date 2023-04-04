@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Delete, Param, Get } from '@nestjs/common';
+import {Body, Controller, HttpStatus, Post, Delete, Param, Get, Query} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -39,9 +39,9 @@ export class CommentsController {
     status: HttpStatus.OK,
     description: 'List comments.',
   })
-  @Get(':postID')
-  public async list(@Param('postID') postID: string) {
-    const comments = await this.commentService.list(postID);
+  @Get()
+  public async all(@Query() params) {
+    const comments = await this.commentService.all(params);
     return comments.map(item => fillObject(CommentRdo, item));
   }
 

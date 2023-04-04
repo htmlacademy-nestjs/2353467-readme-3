@@ -1,29 +1,30 @@
 import { Injectable } from "@nestjs/common";
-import { Post } from "@project/shared/app-types";
-import { PostLinkEntity, PostPhoteEntity, PostQuoteEntity, PostTextEntity, PostVideoEntity } from "./posts.entity";
+import { IPost } from "@project/shared/app-types";
+import { PostEntity } from "./posts.entity";
 import crypto from "crypto";
 
 @Injectable()
 export class PostsMemoryRepository {
 
-  private repository: Post[] = [];
+  private repository: IPost[] = [];
 
-  public async create(postData: PostTextEntity | PostVideoEntity | PostPhoteEntity | PostQuoteEntity | PostLinkEntity ): Promise<Post> {
+  // Get all posts with params
+
+  public async all(params): Promise<IPost[]> {
+    return this.repository;
+  }
+
+  // Create post
+
+  public async create(postData: PostEntity ): Promise<IPost> {
     const entry = { ...postData.toObject(), _id: crypto.randomUUID() };
     this.repository.push(entry);
     return entry;
   }
 
-  public async findById(id: string): Promise<Post> {
-    const post = this.repository.find(item => item._id === id);
-    return post ?? null;
-  }
+  // Update post
 
-  public async destroy(id: string): Promise<void> {
-    this.repository = this.repository.filter(item => item._id !== id);
-  }
-
-  public async update(id: string, postData: PostTextEntity | PostVideoEntity | PostPhoteEntity | PostQuoteEntity | PostLinkEntity): Promise<Post> {
+  public async update(id: string, postData: PostEntity): Promise<IPost> {
     this.repository = this.repository.map(item => {
       if (item._id === id) {
         return { ...postData.toObject(), _id: id };
@@ -32,6 +33,20 @@ export class PostsMemoryRepository {
       return item;
     });
     return this.findById(id);
+  }
+
+  // Find post by ID
+
+  public async findById(id: string): Promise<IPost> {
+    const post = this.repository.find(item => item._id === id);
+    return post ?? null;
+  }
+
+
+  // Remove post
+
+  public async destroy(id: string): Promise<void> {
+    this.repository = this.repository.filter(item => item._id !== id);
   }
 
 }

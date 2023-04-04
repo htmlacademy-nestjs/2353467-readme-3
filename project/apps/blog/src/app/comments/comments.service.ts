@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Comment } from '@project/shared/app-types';
 import { CommentsMemoryRepository } from './comments-memory.repository';
 import { CommentEntity } from './comments.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -20,8 +19,8 @@ export class CommentsService {
     this.commentsRepository.destroy(id);
   }
 
-  public async list(postID: string) {
-    return await this.commentsRepository.list(postID);
+  public async all(params) {
+    return await this.commentsRepository.all(params);
   }
 
 }

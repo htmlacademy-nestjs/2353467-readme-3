@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Post, PostType } from "@project/shared/app-types";
+import { BasePost, PostType } from "@project/shared/app-types";
 import { Expose } from "class-transformer";
 
-class PostRdo implements Post {
+class BasePostRdo implements BasePost {
   @ApiProperty({
     description: 'Post ID',
   })
@@ -46,7 +46,7 @@ class PostRdo implements Post {
   public updatedDate: number;
 }
 
-export class PostTextRdo extends PostRdo {
+export class PostTextRdo extends BasePostRdo {
   @ApiProperty({
     description: 'Text anonce\'s',
   })
@@ -54,7 +54,7 @@ export class PostTextRdo extends PostRdo {
   public anonce: string;
 }
 
-export class PostVideoRdo extends PostRdo {
+export class PostVideoRdo extends BasePostRdo {
   @ApiProperty({
     description: 'Link to video',
   })
@@ -62,7 +62,7 @@ export class PostVideoRdo extends PostRdo {
   public video: string;
 }
 
-export class PostPhotoRdo extends PostRdo {
+export class PostPhotoRdo extends BasePostRdo {
   @ApiProperty({
     description: 'Photo',
   })
@@ -70,7 +70,7 @@ export class PostPhotoRdo extends PostRdo {
   public photo: string;
 }
 
-export class PostQuoteRdo extends PostRdo {
+export class PostQuoteRdo extends BasePostRdo {
   @ApiProperty({
     description: 'Quote',
   })
@@ -78,10 +78,17 @@ export class PostQuoteRdo extends PostRdo {
   public quote: string;
 }
 
-export class PostLinkRdo extends PostRdo {
+export class PostLinkRdo extends BasePostRdo {
   @ApiProperty({
     description: 'Link',
   })
   @Expose()
   public link: string;
 }
+
+export type PostRdo =
+  | PostTextRdo
+  | PostVideoRdo
+  | PostPhotoRdo
+  | PostQuoteRdo
+  | PostLinkRdo

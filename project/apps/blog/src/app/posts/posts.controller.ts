@@ -1,10 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostType } from "@project/shared/app-types";
-import { PostLinkRdo, PostPhotoRdo, PostQuoteRdo, PostTextRdo, PostVideoRdo } from './rdo/post.rdo';
+import { PostConnectionsTypes } from "./posts-connections-types";
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -14,6 +13,14 @@ export class PostsController {
     private readonly postsService: PostsService
   ) { }
 
+  private transformPostToDto(post) {
+
+    const postConnectionType = PostConnectionsTypes.find(connectionType => connectionType.type === post.type);
+    if (postConnectionType) {
+      return fillObject(postConnectionType.rdo, post);
+    }
+  }
+
   // Get all posts
 
   @ApiResponse({
@@ -21,8 +28,9 @@ export class PostsController {
     description: 'List tags.',
   })
   @Get()
-  public all() {
-    const posts = this.postsService.all();
+  public async all(@Query() params) {
+    const posts = await this.postsService.all(params);
+    return posts.map(post => this.transformPostToDto(post));
   }
 
   // Create post
@@ -32,24 +40,9 @@ export class PostsController {
     description: 'Comment successfully add.',
   })
   @Post()
-  public create(@Body() postData: CreatePostDto) {
-    const post = this.postsService.create(postData);
-
-    if (postData.type === PostType.Text) {
-      return fillObject(PostTextRdo, post);
-    }
-    if (postData.type === PostType.Video) {
-      return fillObject(PostVideoRdo, post);
-    }
-    if (postData.type === PostType.Photo) {
-      return fillObject(PostPhotoRdo, post);
-    }
-    if (postData.type === PostType.Quote) {
-      return fillObject(PostQuoteRdo, post);
-    }
-    if (postData.type === PostType.Link) {
-      return fillObject(PostLinkRdo, post);
-    }
+  public async create(@Body() postData: CreatePostDto) {
+    const post = await this.postsService.create(postData);
+    return this.transformPostToDto(post);
   }
 
   // Update post
@@ -60,7 +53,8 @@ export class PostsController {
   })
   @Put(':id')
   public update(@Param('id') id: string, @Body() postData: CreatePostDto) {
-    const tag = this.postsService.update(id, postData);
+    const post = this.postsService.update(id, postData);
+    return this.transformPostToDto(post);
   }
 
   // Remove post
@@ -71,6 +65,7 @@ export class PostsController {
   })
   @Delete(':id')
   public destroy(@Param('id') id: string) {
-
+    this.postsService.destroy(id);
+    return true;
   }
 }

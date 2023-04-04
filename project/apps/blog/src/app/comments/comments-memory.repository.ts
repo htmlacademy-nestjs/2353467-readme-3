@@ -19,8 +19,8 @@ export class CommentsMemoryRepository implements CRUDRepository<CommentEntity, s
     return comment ?? null;
   }
 
-  public async list(postID: string): Promise<Comment[]> {
-    return this.repository.filter(item => item.postID === postID);
+  public async all(params): Promise<Comment[]> {
+    return this.repository;
   }
 
   public async destroy(id: string): Promise<void> {
