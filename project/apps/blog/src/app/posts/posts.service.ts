@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PostEntity } from './posts.entity';
+import { PostTextEntity } from './posts.entity';
 import { Post } from '@project/shared/app-types';
+import { CreatePostDto } from './dto/create-post.dto';
 import { PostsMemoryRepository } from './posts-memory.repository';
 
 @Injectable()
@@ -14,13 +15,14 @@ export class PostsService {
 
   }
 
-  public create(likeData): Promise<Post>  {
-    const likeEntity = new PostEntity(likeData)
-    return this.postsRepository.create(likeEntity);
+  public create(postData: CreatePostDto): Promise<Post>  {
+    const postEntity = new PostTextEntity(postData)
+    return this.postsRepository.create(postEntity);
   }
 
-  public update() {
-
+  public update(id: string, postData: CreatePostDto) {
+    const postEntity = new PostTextEntity(postData);
+    return this.postsRepository.update(id, postEntity);
   }
 
   public destroy() {

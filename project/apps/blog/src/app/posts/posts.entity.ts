@@ -41,7 +41,7 @@ export class PostTextEntity extends PostEntity {
   public anonce: string;
 
   constructor(post: PostText) {
-    super();
+    super(post);
     this.anonce = post.anonce;
   }
 }
@@ -50,7 +50,7 @@ export class PostVideoEntity extends PostEntity {
   public video: string;
 
   constructor(post: PostVideo) {
-    super();
+    super(post);
     this.video = post.video;
   }
 }
@@ -59,7 +59,7 @@ export class PostPhoteEntity extends PostEntity {
   public photo: string;
 
   constructor(post: PostPhoto) {
-    super();
+    super(post);
     this.photo = post.photo;
   }
 }
@@ -68,7 +68,7 @@ export class PostQuoteEntity extends PostEntity {
   public quote: string;
 
   constructor(post: PostQuote) {
-    super();
+    super(post);
     this.quote = post.quote;
   }
 }
@@ -77,7 +77,7 @@ export class PostLinkEntity extends PostEntity {
   public link: string;
 
   constructor(post: PostLink) {
-    super();
+    super(post);
     this.link = post.link;
   }
 }

@@ -3,7 +3,7 @@ import { ConflictException, Injectable, NotFoundException, UnauthorizedException
 import { UserRole } from '@project/shared/app-types';
 import { BlogUserMemoryRepository } from '../blog-user/blog-user-memory.repository';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
-import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from './authentication.constant';
+import { AuthUser } from './authentication.constant';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
@@ -29,7 +29,7 @@ export class AuthenticationService {
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (existUser) {
-      throw new ConflictException(AUTH_USER_EXISTS);
+      throw new ConflictException(AuthUser.UserExist);
     }
 
     const userEntity = await new BlogUserEntity(newUser).setPassword(password);
@@ -41,12 +41,12 @@ export class AuthenticationService {
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (!existUser) {
-      throw new NotFoundException(AUTH_USER_NOT_FOUND);
+      throw new NotFoundException(AuthUser.UserNotFound);
     }
 
     const blogUserEntity = new BlogUserEntity(existUser);
     if (!await blogUserEntity.comparePassword(password)) {
-      throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
+      throw new UnauthorizedException(AuthUser.UserPasswordWrong);
     }
 
     return blogUserEntity.toObject();

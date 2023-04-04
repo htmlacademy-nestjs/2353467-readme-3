@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@ne
 import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
-import { CreatePostTextDto, CreatePostVideoDto, CreatePostPhotoDto, CreatePostQuoteDto, CreatePostLinkeDto } from './dto/create-post.dto';
+import { CreatePostDto } from './dto/create-post.dto';
 import { PostType } from "@project/shared/app-types";
 import { PostLinkRdo, PostPhotoRdo, PostQuoteRdo, PostTextRdo, PostVideoRdo } from './rdo/post.rdo';
 
@@ -22,7 +22,7 @@ export class PostsController {
   })
   @Get()
   public all() {
-    const tags = this.postsService.all();
+    const posts = this.postsService.all();
   }
 
   // Create post
@@ -32,7 +32,7 @@ export class PostsController {
     description: 'Comment successfully add.',
   })
   @Post()
-  public create(@Body() postData: CreatePostTextDto | CreatePostVideoDto | CreatePostPhotoDto | CreatePostQuoteDto | CreatePostLinkeDto) {
+  public create(@Body() postData: CreatePostDto) {
     const post = this.postsService.create(postData);
 
     if (postData.type === PostType.Text) {
@@ -59,8 +59,8 @@ export class PostsController {
     description: 'Post updated.',
   })
   @Put(':id')
-  public update(@Param('id') id: string, @Body() postData) {
-
+  public update(@Param('id') id: string, @Body() postData: CreatePostDto) {
+    const tag = this.postsService.update(id, postData);
   }
 
   // Remove post
