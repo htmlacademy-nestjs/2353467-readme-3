@@ -6,8 +6,8 @@ export interface BasePost {
   tags: string[];
   type: PostType;
   userID: string;
-  createdDate?: number;
-  updatedDate?: number;
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 export interface PostText extends BasePost {

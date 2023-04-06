@@ -11,3 +11,4 @@ project/apps/users/db
 .DS_Store
 coverage
 *.log
+*.env

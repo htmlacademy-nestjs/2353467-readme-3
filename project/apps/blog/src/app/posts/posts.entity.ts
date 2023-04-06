@@ -8,8 +8,8 @@ class BasePostEntity implements BasePost {
   public tags: string[];
   public type: PostType;
   public userID: string;
-  public createdDate: number;
-  public updatedDate: number;
+  public createdAt: number;
+  public updatedAt: number;
 
   constructor(post: BasePost) {
     this._id = post._id;
@@ -17,21 +17,21 @@ class BasePostEntity implements BasePost {
     this.tags = post.tags;
     this.type = post.type;
     this.userID = post.userID;
-    this.createdDate = post.createdDate;
-    this.updatedDate = post.updatedDate;
+    this.createdAt = post.createdAt;
+    this.updatedAt = post.updatedAt;
   }
 
   public toObject() {
     return { ...this };
   }
 
-  public setCreatedDate() {
-    this.createdDate = dayjs().unix();
+  public setCreatedAt() {
+    this.createdAt = dayjs().unix();
     return this;
   }
 
-  public setUpdatedDate() {
-    this.updatedDate = dayjs().unix();
+  public setUpdatedAt() {
+    this.updatedAt = dayjs().unix();
     return this;
   }
 

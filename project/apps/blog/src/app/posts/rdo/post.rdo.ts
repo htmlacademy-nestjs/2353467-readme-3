@@ -37,13 +37,13 @@ class BasePostRdo implements BasePost {
     description: 'Created date',
   })
   @Expose()
-  public createdDate: number;
+  public createdAt: number;
 
   @ApiProperty({
     description: 'Updated date',
   })
   @Expose()
-  public updatedDate: number;
+  public updatedAt: number;
 }
 
 export class PostTextRdo extends BasePostRdo {

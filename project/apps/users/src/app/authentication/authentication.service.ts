@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserRole } from '@project/shared/app-types';
-import { UserMemoryRepository } from '../user/user-memory.repository';
+import { UserRepository } from '../user/user.repository';
 import { UserEntity } from '../user/user.entity';
 import { AuthUser } from './authentication.constant';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,7 +10,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly blogUserRepository: UserMemoryRepository
+    private readonly userRepository: UserRepository
   ) { }
 
   public async register(user: CreateUserDto) {
@@ -26,19 +26,19 @@ export class AuthenticationService {
       passwordHash: '',
     };
 
-    const existUser = await this.blogUserRepository.findByEmail(email);
+    const existUser = await this.userRepository.findByEmail(email);
 
     if (existUser) {
       throw new ConflictException(AuthUser.UserExist);
     }
 
     const userEntity = await new UserEntity(newUser).setPassword(password);
-    return this.blogUserRepository.create(userEntity);
+    return this.userRepository.create(userEntity);
   }
 
   public async verifyUser(credentials: LoginUserDto) {
     const { email, password } = credentials;
-    const existUser = await this.blogUserRepository.findByEmail(email);
+    const existUser = await this.userRepository.findByEmail(email);
 
     if (!existUser) {
       throw new NotFoundException(AuthUser.UserNotFound);
@@ -53,6 +53,6 @@ export class AuthenticationService {
   }
 
   public async getUser(id: string) {
-    return this.blogUserRepository.findById(id);
+    return this.userRepository.findById(id);
   }
 }
