@@ -6,14 +6,14 @@ export class CommentEntity implements Comment {
     text: string;
     postID: string;
     userID: string;
-    createdDate: number;
+    createdAt: number;
 
   constructor(comment: Comment) {
     this._id = comment._id;
     this.text = comment.text;
     this.postID = comment.postID;
     this.userID = comment.userID;
-    this.createdDate = comment.createdDate;
+    this.createdAt = comment.createdAt;
   }
 
   public toObject() {
@@ -21,7 +21,7 @@ export class CommentEntity implements Comment {
   }
 
   public setCreateDate() {
-    this.createdDate = dayjs().unix();
+    this.createdAt = dayjs().unix();
     return this;
   }
 
