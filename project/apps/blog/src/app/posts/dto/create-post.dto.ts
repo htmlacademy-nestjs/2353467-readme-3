@@ -22,6 +22,11 @@ class BasePostDto {
     description: 'User ID',
   })
   public userID: string;
+
+  @ApiProperty({
+    description: 'Post is published',
+  })
+  public published: boolean;
 }
 
 export class CreatePostTextDto extends BasePostDto {

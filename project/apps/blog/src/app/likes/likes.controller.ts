@@ -25,18 +25,10 @@ export class LikesController {
     description: 'Like remove.',
   })
   @Delete(':id')
-  public destroy(@Param('id') id: string) {
+  public destroy(@Param('id') id: number) {
     this.likesService.destroy(id);
     return true;
   }
 
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Count likes post\'s.',
-  })
-  @Get(':postID')
-  public count(@Param('postID') postID: string) {
-    return this.likesService.count(postID);
-  }
 
 }

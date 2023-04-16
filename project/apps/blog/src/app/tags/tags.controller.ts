@@ -22,8 +22,8 @@ export class TagsController {
     description: 'List tags.',
   })
   @Get()
-  public all() {
-    const tags = this.tagsService.all();
+  public findAll() {
+    const tags = this.tagsService.findAll();
     return tags.map(item => fillObject(TagRdo, item));
   }
 
@@ -48,7 +48,7 @@ export class TagsController {
     description: 'Tag updated.',
   })
   @Put(':id')
-  public update(@Param('id') id: string, @Body() tagData: CreateTagDto) {
+  public update(@Param('id') id: number, @Body() tagData: CreateTagDto) {
     const tag = this.tagsService.update(id, tagData);
     return fillObject(TagRdo, tag);
   }
@@ -60,7 +60,7 @@ export class TagsController {
     description: 'Tag remove.',
   })
   @Delete(':id')
-  public destroy(@Param('id') id: string) {
+  public destroy(@Param('id') id: number) {
     this.tagsService.destroy(id);
   }
 

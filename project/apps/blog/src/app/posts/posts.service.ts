@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { IPost } from '@project/shared/app-types';
-import { PostsMemoryRepository } from './posts-memory.repository';
+import { PostsRepository } from './posts.repository';
 import { PostConnectionsTypes } from "./posts-connections-types";
 
 @Injectable()
 export class PostsService {
 
   constructor(
-    private readonly postsRepository: PostsMemoryRepository
+    private readonly postsRepository: PostsRepository
   ) { }
 
   private getConnectionType(type) {
@@ -16,8 +16,8 @@ export class PostsService {
 
   // Get all posts
 
-  public all(params): Promise<IPost[]>  {
-    return this.postsRepository.all(params);
+  public findAll(params): Promise<IPost[]>  {
+    return this.postsRepository.findAll(params);
   }
 
   // Create post
@@ -32,7 +32,7 @@ export class PostsService {
 
   // Update post
 
-  public update(id: string, postData) {
+  public update(id: number, postData) {
     const connectionType = this.getConnectionType(postData.type);
     const postEntity = new connectionType.entity(postData)
       .setUpdatedAt();
@@ -41,8 +41,9 @@ export class PostsService {
 
   // Remove post
 
-  public destroy(id: string) {
+  public destroy(id: number) {
     this.postsRepository.destroy(id);
   }
+
 
 }

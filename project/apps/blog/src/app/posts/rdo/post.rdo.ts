@@ -6,8 +6,8 @@ class BasePostRdo implements BasePost {
   @ApiProperty({
     description: 'Post ID',
   })
-  @Expose({ name: '_id' })
-  public id: string;
+  @Expose()
+  public id: number;
 
   @ApiProperty({
     description: 'Post title',
@@ -32,6 +32,12 @@ class BasePostRdo implements BasePost {
   })
   @Expose()
   public userID: string;
+
+  @ApiProperty({
+    description: 'User ID',
+  })
+  @Expose()
+  public published: boolean;
 
   @ApiProperty({
     description: 'Created date',

@@ -1,7 +1,6 @@
 services:
   users.mongo:
     image: mongo
-    restart: always
     container_name: users.mongo
 
     environment:
@@ -23,7 +22,6 @@ services:
 
   user.mongo.ui:
     image: mongo-express
-    restart: always
     container_name: user.mongo.ui
     ports:
       - 8081:8081

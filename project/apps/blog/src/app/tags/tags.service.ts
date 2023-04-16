@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TagEntity } from './tags.entity';
-import { TagsMemoryRepository } from './tags-memory.repository';
+import { TagsRepository } from './tags.repository';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { Tag } from '@project/shared/app-types';
 
@@ -8,11 +8,11 @@ import { Tag } from '@project/shared/app-types';
 export class TagsService {
 
   constructor(
-    private readonly tagsRepository: TagsMemoryRepository
+    private readonly tagsRepository: TagsRepository
   ) { }
 
-  public all(): Tag[] {
-    return this.tagsRepository.all();
+  public findAll(): Tag[] {
+    return this.tagsRepository.findAll();
   }
 
   public create(tagData: CreateTagDto): Promise<Tag> {
@@ -20,12 +20,12 @@ export class TagsService {
     return this.tagsRepository.create(tagEntity);
   }
 
-  public update(id: string, tagData: CreateTagDto): Promise<Tag> {
+  public update(id: number, tagData: CreateTagDto): Promise<Tag> {
     const tagEntity = new TagEntity(tagData);
     return this.tagsRepository.update(id, tagEntity);
   }
 
-  public destroy(id: string) {
+  public destroy(id: number) {
     this.tagsRepository.destroy(id);
   }
 }

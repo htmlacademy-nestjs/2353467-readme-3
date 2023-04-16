@@ -4,6 +4,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillObject } from '@project/util/util-core';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostConnectionsTypes } from "./posts-connections-types";
+import { PostParams } from '@project/shared/app-types';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -28,8 +29,8 @@ export class PostsController {
     description: 'List tags.',
   })
   @Get()
-  public async all(@Query() params) {
-    const posts = await this.postsService.all(params);
+  public async findAll(@Query() params: PostParams) {
+    const posts = await this.postsService.findAll(params);
     return posts.map(post => this.transformPostToDto(post));
   }
 
@@ -52,7 +53,7 @@ export class PostsController {
     description: 'Post updated.',
   })
   @Put(':id')
-  public update(@Param('id') id: string, @Body() postData: CreatePostDto) {
+  public update(@Param('id') id: number, @Body() postData: CreatePostDto) {
     const post = this.postsService.update(id, postData);
     return this.transformPostToDto(post);
   }
@@ -64,8 +65,17 @@ export class PostsController {
     description: 'Post remove.',
   })
   @Delete(':id')
-  public destroy(@Param('id') id: string) {
+  public destroy(@Param('id') id: number) {
     this.postsService.destroy(id);
     return true;
   }
+
+  /*
+  @Get(':id')
+  public test(@Param('id') id) {
+    const post = this.postsService.test(id);
+    return this.transformPostToDto(post);
+  }
+  */
+
 }

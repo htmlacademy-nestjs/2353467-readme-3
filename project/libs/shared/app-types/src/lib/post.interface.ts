@@ -1,13 +1,15 @@
 import { PostType } from "./post-type.enum";
 
 export interface BasePost {
-  _id?: string;
+  id?: number;
   title: string;
   tags: string[];
   type: PostType;
   userID: string;
+  originalUserID?: string;
   createdAt?: number;
   updatedAt?: number;
+  published: boolean;
 }
 
 export interface PostText extends BasePost {
@@ -37,3 +39,10 @@ export type IPost =
   | PostPhoto
   | PostQuote
   | PostLink;
+
+export interface PostParams {
+  sort?: string;
+  limit?: number;
+  page?: number;
+  users?: number;
+}

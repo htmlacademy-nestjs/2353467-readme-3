@@ -3,22 +3,24 @@ import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo
 
 class BasePostEntity implements BasePost {
 
-  public _id: string;
+  public id: number;
   public title: string;
   public tags: string[];
   public type: PostType;
   public userID: string;
   public createdAt: number;
   public updatedAt: number;
+  public published: boolean;
 
   constructor(post: BasePost) {
-    this._id = post._id;
+    this.id = post.id;
     this.title = post.title;
     this.tags = post.tags;
     this.type = post.type;
     this.userID = post.userID;
     this.createdAt = post.createdAt;
     this.updatedAt = post.updatedAt;
+    this.published = post.published;
   }
 
   public toObject() {

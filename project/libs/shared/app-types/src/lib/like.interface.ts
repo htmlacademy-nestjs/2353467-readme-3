@@ -1,5 +1,5 @@
 export interface Like {
-  _id?: string;
+  id?: number;
   userID: string;
-  postID: string;
+  postID: number;
 }

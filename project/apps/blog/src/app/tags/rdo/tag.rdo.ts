@@ -7,8 +7,8 @@ export class TagRdo implements Tag {
   @ApiProperty({
     description: 'ID tag',
   })
-  @Expose({ name: '_id' })
-  public id: string;
+  @Expose({ name: 'id' })
+  public id: number;
 
   @ApiProperty({
     description: 'Tag name',

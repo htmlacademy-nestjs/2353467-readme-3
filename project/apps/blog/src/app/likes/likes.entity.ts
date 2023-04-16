@@ -1,12 +1,12 @@
 import { Like } from "@project/shared/app-types";
 
 export class LikeEntity implements Like {
-    _id: string;
-    postID: string;
+    id: number;
+    postID: number;
     userID: string;
 
   constructor(like: Like) {
-    this._id = like._id;
+    this.id = like.id;
     this.postID = like.postID;
     this.userID = like.userID;
   }

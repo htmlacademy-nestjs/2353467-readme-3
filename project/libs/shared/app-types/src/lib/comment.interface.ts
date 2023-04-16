@@ -1,7 +1,10 @@
+import { IPost } from "./post.interface";
+
 export interface Comment {
-  _id?: string;
+  id?: number;
   text: string;
-  postID: string;
+  postID: number;
   userID: string;
-  createdAt?: number;
+  createdAt?: string;
+  post?: IPost
 }

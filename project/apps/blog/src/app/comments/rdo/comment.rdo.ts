@@ -8,8 +8,8 @@ export class CommentRdo implements Comment {
     description: 'ID Comment',
     example: '13'
   })
-  @Expose({ name: '_id' })
-  public id: string;
+  @Expose()
+  public id: number;
 
   @ApiProperty({
     description: 'Text comment',
@@ -23,7 +23,7 @@ export class CommentRdo implements Comment {
     example: '123'
   })
   @Expose()
-  public postID: string;
+  public postID: number;
 
   @ApiProperty({
     description: 'UserID send comment',
@@ -37,5 +37,5 @@ export class CommentRdo implements Comment {
     example: '1680111536'
   })
   @Expose()
-  public createdAt: number;
+  public createdAt: string;
 }
