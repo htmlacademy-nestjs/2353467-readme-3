@@ -9,28 +9,45 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
 
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findAll(params) {
-    return await this.prisma.comment.findMany();
+  public async findAll(params): Promise<Comment[]> {
+    return await this.prisma.comment.findMany({
+      include: {
+        post: true,
+      }
+    });
   }
 
-  public async find(id: number): Promise<Comment|null> {
+  public async find(id: number): Promise<Comment> {
     return await this.prisma.comment.findFirst({
       where: { id },
+      include: {
+        post: true,
+      }
     });
   }
 
   public async create(commentData: CommentEntity): Promise<Comment> {
-    console.log('commentData ', commentData.toObject())
+    const entity = commentData.toObject();
+    console.log('commentData ', entity)
     return await this.prisma.comment.create({
-      data: { ...commentData.toObject() }
+      data: {
+        ...entity,
+      },
+      include: {
+        post: true,
+      }
     });
   }
 
 
   public async update(id: number, commentData: CommentEntity): Promise<Comment> {
+    const entity = commentData.toObject();
     return await this.prisma.comment.update({
       where: { id },
-      data: { ...commentData.toObject() },
+      data: { ...entity },
+      include: {
+        post: true,
+      }
     });
   }
 

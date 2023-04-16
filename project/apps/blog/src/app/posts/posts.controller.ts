@@ -70,12 +70,4 @@ export class PostsController {
     return true;
   }
 
-  /*
-  @Get(':id')
-  public test(@Param('id') id) {
-    const post = this.postsService.test(id);
-    return this.transformPostToDto(post);
-  }
-  */
-
 }

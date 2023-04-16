@@ -71,13 +71,4 @@ export class CommentsController {
     return true;
   }
 
-/*
-  @Get('test/:id')
-  public async test(@Param('id') id) {
-    console.log('controller: ', id);
-    const comment = await this.commentService.test(id);
-    console.log('comment: ', comment);
-    return fillObject(CommentRdo, comment);
-  }
-*/
 }

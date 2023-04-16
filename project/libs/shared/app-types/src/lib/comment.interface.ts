@@ -5,6 +5,5 @@ export interface Comment {
   text: string;
   postID: number;
   userID: string;
-  createdAt?: string;
-  post?: IPost
+  createdAt?: Date;
 }

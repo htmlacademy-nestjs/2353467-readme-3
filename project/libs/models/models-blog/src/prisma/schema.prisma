@@ -36,7 +36,7 @@ model Comment {
   userID     String   @default("") @map("user_id")
   createdAt  DateTime @default(now()) @map("created_at")
 
-  post       Post @relation(fields: [postID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  post       Post?    @relation(fields: [postID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   @@map("comments")
 }
@@ -54,7 +54,7 @@ model Like {
   postID      Int      @default(0) @map("post_id")
   userID      String   @default("") @map("user_id")
 
-  post        Post     @relation(fields: [postID], references: [id], onDelete: Cascade)
+  post        Post?    @relation(fields: [postID], references: [id], onDelete: Cascade)
 
   @@map("likes")
 }

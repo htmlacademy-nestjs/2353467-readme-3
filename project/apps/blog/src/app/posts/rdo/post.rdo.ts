@@ -16,12 +16,6 @@ class BasePostRdo implements BasePost {
   public title: string;
 
   @ApiProperty({
-    description: 'List tags',
-  })
-  @Expose()
-  public tags: string[];
-
-  @ApiProperty({
     description: 'Post type',
   })
   @Expose()
@@ -43,13 +37,13 @@ class BasePostRdo implements BasePost {
     description: 'Created date',
   })
   @Expose()
-  public createdAt: number;
+  public createdAt: Date;
 
   @ApiProperty({
     description: 'Updated date',
   })
   @Expose()
-  public updatedAt: number;
+  public updatedAt: Date;
 }
 
 export class PostTextRdo extends BasePostRdo {

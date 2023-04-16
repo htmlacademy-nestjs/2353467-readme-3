@@ -24,9 +24,7 @@ export class PostsService {
 
   public async create(postData): Promise<IPost>  {
     const connectionType = this.getConnectionType(postData.type);
-    const postEntity = new connectionType.entity(postData)
-      .setCreatedAt()
-      .setUpdatedAt();
+    const postEntity = new connectionType.entity(postData);
     return await this.postsRepository.create(postEntity);
   }
 
@@ -34,8 +32,7 @@ export class PostsService {
 
   public update(id: number, postData) {
     const connectionType = this.getConnectionType(postData.type);
-    const postEntity = new connectionType.entity(postData)
-      .setUpdatedAt();
+    const postEntity = new connectionType.entity(postData);
     return this.postsRepository.update(id, postEntity);
   }
 

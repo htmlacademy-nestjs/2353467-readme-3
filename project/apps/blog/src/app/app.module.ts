@@ -6,7 +6,7 @@ import { TagsModule } from './tags/tags.module';
 import { LikesModule } from './likes/likes.module';
 
 @Module({
-  imports: [PostsModule, CommentsModule, TagsModule, LikesModule],
+  imports: [ PostsModule, CommentsModule, TagsModule, LikesModule ],
   controllers: [],
   providers: [],
 })

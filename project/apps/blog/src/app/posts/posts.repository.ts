@@ -12,23 +12,12 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
   // Get all posts with params
 
   public async findAll(params): Promise<IPost[]> {
-    return await this.prisma.post.findMany();
-  }
-
-  // Create post
-
-  public async create(postData: PostEntity ): Promise<IPost | null> {
-    return await this.prisma.post.create({
-      data: { ...postData.toObject() },
-    });
-  }
-
-  // Update post
-
-  public async update(id: number, postData: PostEntity): Promise<IPost | null> {
-    return await this.prisma.post.update({
-      where: { id },
-      data: { ...postData.toObject() },
+    return await this.prisma.post.findMany({
+      include: {
+        comments: true,
+        tags: true,
+        likes: true,
+      },
     });
   }
 
@@ -37,6 +26,40 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
   public async find(id: number): Promise<IPost | null> {
     return await this.prisma.post.findFirst({
       where: { id },
+      include: {
+        comments: true,
+        tags: true,
+        likes: true,
+      },
+    });
+  }
+
+  // Create post
+
+  public async create(postData: PostEntity ): Promise<IPost | null> {
+    const entity = postData.toObject();
+    return await this.prisma.post.create({
+      data: { ...entity },
+      include: {
+        comments: true,
+        tags: true,
+        likes: true,
+      },
+    });
+  }
+
+  // Update post
+
+  public async update(id: number, postData: PostEntity): Promise<IPost | null> {
+    const entity = postData.toObject();
+    return await this.prisma.post.update({
+      where: { id },
+      data: { ...entity },
+      include: {
+        comments: true,
+        tags: true,
+        likes: true,
+      },
     });
   }
 
@@ -48,11 +71,5 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
       where: { id },
     });
   }
-/*
-  public async test(id) {
-    await this.prisma.post.findFirst({
-      where: { id },
-    });
-  }
-*/
+
 }
