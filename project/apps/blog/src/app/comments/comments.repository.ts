@@ -41,12 +41,4 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
     });
   }
 
-/*
-public async test(id) {
-  return await this.prisma.comment.findFirst({
-    where: { id: Number(id) },
-  });
-}
-*/
-
 }

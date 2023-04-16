@@ -3,7 +3,7 @@ import { PostType } from "./post-type.enum";
 export interface BasePost {
   id?: number;
   title: string;
-  tags: string[];
+  tagsIDs: number[];
   type: PostType;
   userID: string;
   originalUserID?: string;
