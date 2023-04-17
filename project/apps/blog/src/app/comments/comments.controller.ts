@@ -4,7 +4,6 @@ import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
 import { fillObject } from '@project/util/util-core';
-import { log } from 'console';
 
 @ApiTags('Comments')
 @Controller('comments')

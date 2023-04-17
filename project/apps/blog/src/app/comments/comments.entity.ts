@@ -1,4 +1,3 @@
-import { User } from "@project/shared/app-types";
 import { Comment } from "@project/shared/app-types";
 
 export class CommentEntity implements Comment {
@@ -6,13 +5,11 @@ export class CommentEntity implements Comment {
     text: string;
     postID: number;
     userID: string;
-    //createdAt: string;
 
   constructor(comment: Comment) {
     this.text = comment.text;
     this.postID = comment.postID;
     this.userID = comment.userID;
-    //this.createdAt = comment.createdAt;
   }
 
   public toObject() {
