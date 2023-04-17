@@ -10,15 +10,15 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
   constructor(private readonly prisma: PrismaService) {}
 
   public async findAll(params): Promise<Comment[]> {
-    return await this.prisma.comment.findMany({
+    return this.prisma.comment.findMany({
       include: {
         post: true,
       }
     });
   }
 
-  public async find(id: number): Promise<Comment> {
-    return await this.prisma.comment.findFirst({
+  public async find(id: number): Promise<Comment | null> {
+    return this.prisma.comment.findFirst({
       where: { id },
       include: {
         post: true,
@@ -28,8 +28,7 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
 
   public async create(commentData: CommentEntity): Promise<Comment> {
     const entity = commentData.toObject();
-    console.log('commentData ', entity)
-    return await this.prisma.comment.create({
+    return this.prisma.comment.create({
       data: {
         ...entity,
       },
@@ -42,7 +41,7 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
 
   public async update(id: number, commentData: CommentEntity): Promise<Comment> {
     const entity = commentData.toObject();
-    return await this.prisma.comment.update({
+    return this.prisma.comment.update({
       where: { id },
       data: { ...entity },
       include: {
@@ -53,7 +52,7 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
 
 
   public async destroy(id: number): Promise<void> {
-    await this.prisma.comment.delete({
+    this.prisma.comment.delete({
       where: { id },
     });
   }

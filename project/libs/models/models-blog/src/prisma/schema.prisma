@@ -44,6 +44,7 @@ model Comment {
 model Tag {
   id          Int      @id @default(autoincrement())
   title       String   @default("")
+
   posts       Post[]
 
   @@map("tags")

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CommentsRepository } from './comments.repository';
 import { CommentEntity } from './comments.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { fillObject } from '@project/util/util-core';
+import { CommentRdo } from './rdo/comment.rdo';
 
 @Injectable()
 export class CommentsService {
@@ -11,32 +13,29 @@ export class CommentsService {
   ) { }
 
   public async findAll(params) {
-    return await this.commentsRepository.findAll(params);
+    const comments = await this.commentsRepository.findAll(params);
+    return comments.map(item => fillObject(CommentRdo, item));
   }
 
   public async find(id: number) {
-    return await this.commentsRepository.find(id);
+    const comment = await this.commentsRepository.find(id);
+    return fillObject(CommentRdo, comment);
   }
 
-  public create(commentData: CreateCommentDto) {
+  public async create(commentData: CreateCommentDto) {
     const commentEntity = new CommentEntity(commentData);
-    return this.commentsRepository.create(commentEntity);
+    const comment = await this.commentsRepository.create(commentEntity);
+    return fillObject(CommentRdo, comment);
   }
 
-  public update(id: number, commentData: CreateCommentDto) {
+  public async update(id: number, commentData: CreateCommentDto) {
     const commentEntity = new CommentEntity(commentData);
-    return this.commentsRepository.update(id, commentEntity);
+    const comment = await this.commentsRepository.update(id, commentEntity);
+    return fillObject(CommentRdo, comment);
   }
 
-  public destroy(id: number): void {
+  public async destroy(id: number) {
     this.commentsRepository.destroy(id);
   }
 
-
-
-/*
-public test(id) {
-  return this.commentsRepository.test(id);
-}
-*/
 }

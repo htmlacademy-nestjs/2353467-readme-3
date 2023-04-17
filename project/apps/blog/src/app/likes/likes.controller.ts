@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikesService } from './likes.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -25,9 +25,9 @@ export class LikesController {
     description: 'Like remove.',
   })
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   public destroy(@Param('id') id: number) {
     this.likesService.destroy(id);
-    return true;
   }
 
 

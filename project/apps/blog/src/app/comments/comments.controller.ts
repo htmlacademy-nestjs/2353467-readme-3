@@ -3,7 +3,6 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
-import { fillObject } from '@project/util/util-core';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -20,8 +19,7 @@ export class CommentsController {
   })
   @Get()
   public async findAll(@Query() params) {
-    const comments = await this.commentService.findAll(params);
-    return comments.map(item => fillObject(CommentRdo, item));
+    return this.commentService.findAll(params);
   }
 
   @ApiResponse({
@@ -31,8 +29,7 @@ export class CommentsController {
   })
   @Get(':id')
   public async find(@Param('id') id: string) {
-    const comment = await this.commentService.find(Number(id));
-    return fillObject(CommentRdo, comment);
+    return this.commentService.find(Number(id));
   }
 
 
@@ -43,8 +40,7 @@ export class CommentsController {
   })
   @Post()
   public create(@Body() commentData: CreateCommentDto) {
-    const comment = this.commentService.create(commentData);
-    return fillObject(CommentRdo, comment);
+    return this.commentService.create(commentData);
   }
 
   @ApiResponse({
@@ -54,8 +50,7 @@ export class CommentsController {
   })
   @Post()
   public update(@Param('id') id: string, @Body() commentData: CreateCommentDto) {
-    const comment = this.commentService.update(Number(id), commentData);
-    return fillObject(CommentRdo, comment);
+    return this.commentService.update(Number(id), commentData);
   }
 
 

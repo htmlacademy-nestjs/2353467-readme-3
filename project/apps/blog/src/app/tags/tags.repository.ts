@@ -2,39 +2,58 @@ import { CRUDRepository } from '@project/util/util-types';
 import { Tag } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { TagEntity } from './tags.entity';
-import dayjs from "dayjs";
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class TagsRepository implements CRUDRepository<TagEntity, number, Tag> {
-  private repository: Tag[] = [];
+
+  constructor(private readonly prisma: PrismaService) {}
+
+  public async findAll(): Promise<Tag[]> {
+    return this.prisma.tag.findMany({
+      include: {
+        posts: true,
+      }
+    });
+  }
+
+  public async find(id: number): Promise<Tag | null> {
+    return this.prisma.tag.findFirst({
+      where: { id },
+      include: {
+        posts: true,
+      }
+    });
+  }
 
   public async create(tagData: TagEntity): Promise<Tag> {
-    const entry = { ...tagData.toObject(), id: dayjs().unix() };
-    this.repository.push(entry);
-    return entry;
-  }
-
-  public async find(id: number): Promise<Tag> {
-    const tag = this.repository.find(item => item.id === id);
-    return tag ?? null;
-  }
-
-  public async destroy(id: number): Promise<void> {
-    this.repository = this.repository.filter(item => item.id !== id);
+    const entity = tagData.toObject();
+    return this.prisma.tag.create({
+      data: {
+        ...entity,
+      },
+      include: {
+        posts: true,
+      }
+    });
   }
 
   public async update(id: number, tagData: TagEntity): Promise<Tag> {
-    this.repository = this.repository.map(item => {
-      if (item.id === id) {
-        return { ...tagData.toObject(), id: id };
+    const entity = tagData.toObject();
+    return this.prisma.tag.update({
+      where: { id },
+      data: { ...entity },
+      include: {
+        posts: true,
       }
-
-      return item;
     });
-    return this.find(id);
   }
 
-  public findAll(): Tag[] {
-    return this.repository;
+  public async destroy(id: number): Promise<void> {
+    await this.prisma.tag.delete({
+      where: { id },
+    });
   }
+
+
 }

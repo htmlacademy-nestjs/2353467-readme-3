@@ -9,8 +9,9 @@ export class LikesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(likeData: LikeEntity): Promise<Like> {
-    return await this.prisma.like.create({
-      data: { ...likeData.toObject() }
+    const entity = likeData.toObject();
+    return this.prisma.like.create({
+      data: { ...entity }
     });
   }
 
