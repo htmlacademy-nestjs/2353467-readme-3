@@ -1,11 +1,11 @@
 -- CreateTable
 CREATE TABLE "posts" (
     "id" SERIAL NOT NULL,
+    "type" TEXT NOT NULL DEFAULT '',
     "title" TEXT NOT NULL DEFAULT '',
-    "description" TEXT NOT NULL DEFAULT '',
-    "content" TEXT NOT NULL DEFAULT '',
+    "data" JSONB NOT NULL DEFAULT '{}',
     "user_id" TEXT NOT NULL DEFAULT '',
-    "original_user_id" TEXT NOT NULL,
+    "original_user_id" TEXT NOT NULL DEFAULT '',
     "published" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "publish_at" TIMESTAMP(3) NOT NULL,

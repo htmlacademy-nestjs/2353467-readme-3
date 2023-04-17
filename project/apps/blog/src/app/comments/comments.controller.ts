@@ -30,7 +30,7 @@ export class CommentsController {
     status: HttpStatus.OK,
     description: 'Comments by ID',
   })
-  @Get()
+  @Get(':id')
   public async find(@Param('id') id: string) {
     const comment = await this.commentService.find(Number(id));
     return fillObject(CommentRdo, comment);
@@ -68,7 +68,6 @@ export class CommentsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   public destroy(@Param('id') id: number) {
     this.commentService.destroy(id);
-    return true;
   }
 
 }

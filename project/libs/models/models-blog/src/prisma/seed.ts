@@ -8,10 +8,11 @@ async function fillDB() {
     where: { id: 1 },
     update: {},
     create: {
-      title: 'Post 1',
-      description: 'Post description',
-      content: 'Post text',
+      title: 'Post Text',
       userID: 'sdfsdf',
+      data: {
+        anonce: 'Anonce Text'
+      },
       tags: {
         create: [
           { title: 'Tag 1' },

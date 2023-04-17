@@ -12,7 +12,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
   // Get all posts with params
 
   public async findAll(params): Promise<IPost[]> {
-    return await this.prisma.post.findMany({
+    return this.prisma.post.findMany({
       include: {
         comments: true,
         tags: true,
@@ -23,8 +23,8 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   // Find post by ID
 
-  public async find(id: number): Promise<IPost | null> {
-    return await this.prisma.post.findFirst({
+  public async find(id: number): Promise<IPost> {
+    return this.prisma.post.findFirst({
       where: { id },
       include: {
         comments: true,
@@ -38,7 +38,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   public async create(postData: PostEntity ): Promise<IPost | null> {
     const entity = postData.toObject();
-    return await this.prisma.post.create({
+    return this.prisma.post.create({
       data: { ...entity },
       include: {
         comments: true,
@@ -52,7 +52,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   public async update(id: number, postData: PostEntity): Promise<IPost | null> {
     const entity = postData.toObject();
-    return await this.prisma.post.update({
+    return this.prisma.post.update({
       where: { id },
       data: { ...entity },
       include: {
@@ -67,7 +67,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
   // Remove post
 
   public async destroy(id: number): Promise<void> {
-    await this.prisma.post.delete({
+    this.prisma.post.delete({
       where: { id },
     });
   }

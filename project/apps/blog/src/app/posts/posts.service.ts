@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IPost } from '@project/shared/app-types';
+import { IPost, PostParams } from '@project/shared/app-types';
 import { PostsRepository } from './posts.repository';
-import { PostConnectionsTypes } from "./posts-connections-types";
+import { CreatePostDto } from './dto/create-post.dto';
+import { PostFactory } from './posts.factory';
 
 @Injectable()
 export class PostsService {
@@ -10,37 +11,35 @@ export class PostsService {
     private readonly postsRepository: PostsRepository
   ) { }
 
-  private getConnectionType(type) {
-    return PostConnectionsTypes.find(connectionType => connectionType.type === type);
+  public async findAll(params: PostParams): Promise<IPost[]>  {
+    const posts = await this.postsRepository.findAll(params);
+    return posts.map((post) => {
+      const postFactory = new PostFactory();
+      return postFactory.getRDO(post);
+    });
   }
 
-  // Get all posts
-
-  public findAll(params): Promise<IPost[]>  {
-    return this.postsRepository.findAll(params);
+  public async find(id: number): Promise<IPost>  {
+    const post = await this.postsRepository.find(id);
+    const postFactory = new PostFactory();
+    return postFactory.getRDO(post);
   }
 
-  // Create post
-
-  public async create(postData): Promise<IPost>  {
-    const connectionType = this.getConnectionType(postData.type);
-    const postEntity = new connectionType.entity(postData);
-    return await this.postsRepository.create(postEntity);
+  public async create(postData: CreatePostDto): Promise<IPost>  {
+    const postFactory = new PostFactory();
+    const entity = postFactory.getEntity(postData);
+    const post = await this.postsRepository.create(entity);
+    return postFactory.getRDO(post)
   }
 
-  // Update post
-
-  public update(id: number, postData) {
-    const connectionType = this.getConnectionType(postData.type);
-    const postEntity = new connectionType.entity(postData);
-    return this.postsRepository.update(id, postEntity);
+  public async update(id: number, postData: CreatePostDto) {
+    const postFactory = new PostFactory();
+    const entity = postFactory.getEntity(postData);
+    const post = await this.postsRepository.update(id, entity);
+    return postFactory.getRDO(post)
   }
-
-  // Remove post
 
   public destroy(id: number) {
     this.postsRepository.destroy(id);
   }
-
-
 }

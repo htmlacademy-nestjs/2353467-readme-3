@@ -1,23 +1,21 @@
 import { BasePost, Like, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo, Tag } from "@project/shared/app-types";
 
 class BasePostEntity implements BasePost {
-
   public id: number;
-  public title: string;
   public type: PostType;
+  public title: string;
+  public data: object;
   public userID: string;
+  public published: boolean;
   public createdAt: Date;
   public updatedAt: Date;
-  public published: boolean;
+  // relationship
   public comments: Comment[];
   public tags: Tag[];
   public likes: Like[];
 
-
   constructor(post: BasePost) {
-    //this.id = post.id;
     this.title = post.title;
-    this.type = post.type;
     this.userID = post.userID;
     this.createdAt = post.createdAt;
     this.updatedAt = post.updatedAt;
@@ -27,8 +25,6 @@ class BasePostEntity implements BasePost {
   public toObject() {
     return { ...this };
   }
-
-
 }
 
 export class PostTextEntity extends BasePostEntity {
@@ -36,7 +32,8 @@ export class PostTextEntity extends BasePostEntity {
 
   constructor(post: PostText) {
     super(post);
-    this.anonce = post.anonce;
+    this.type = PostType.Text;
+    this.data = { anonce: post.anonce };
   }
 }
 
@@ -45,7 +42,8 @@ export class PostVideoEntity extends BasePostEntity {
 
   constructor(post: PostVideo) {
     super(post);
-    this.video = post.video;
+    this.type = PostType.Video;
+    this.data = { video: post.video };
   }
 }
 
@@ -54,7 +52,8 @@ export class PostPhotoEntity extends BasePostEntity {
 
   constructor(post: PostPhoto) {
     super(post);
-    this.photo = post.photo;
+    this.type = PostType.Photo;
+    this.data = { photo: post.photo };
   }
 }
 
@@ -63,7 +62,8 @@ export class PostQuoteEntity extends BasePostEntity {
 
   constructor(post: PostQuote) {
     super(post);
-    this.quote = post.quote;
+    this.type = PostType.Quote;
+    this.data = { quote: post.quote };
   }
 }
 
@@ -72,7 +72,8 @@ export class PostLinkEntity extends BasePostEntity {
 
   constructor(post: PostLink) {
     super(post);
-    this.link = post.link;
+    this.type = PostType.Link;
+    this.data = { link: post.link };
   }
 }
 

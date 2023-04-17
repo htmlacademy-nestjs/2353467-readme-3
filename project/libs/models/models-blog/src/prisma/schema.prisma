@@ -13,9 +13,9 @@ datasource db {
 
 model Post {
   id              Int      @id @default(autoincrement())
+  type            String   @default("")
   title           String   @default("")
-  description     String   @default("")
-  content         String   @default("")
+  data            Json     @default("{}")
   userID          String   @default("") @map("user_id")
   originalUserID  String   @default("") @map("original_user_id")
   published       Boolean  @default(true)
