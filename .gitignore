@@ -13,3 +13,5 @@ project/apps/blog/db
 coverage
 *.log
 *.env
+
+project/apps/uploader/uploads
