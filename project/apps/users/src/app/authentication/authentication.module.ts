@@ -4,8 +4,8 @@ import { AuthenticationService } from './authentication.service';
 import { UserModule } from '../user/user.module';
 
 @Module({
-  imports: [UserModule],
-  controllers: [AuthenticationController],
-  providers: [AuthenticationService],
+  imports: [ UserModule ],
+  controllers: [ AuthenticationController ],
+  providers: [ AuthenticationService ],
 })
 export class AuthenticationModule {}

@@ -10,9 +10,7 @@ export class UserModel extends Document implements User {
   @Prop()
   public avatar: string;
 
-  @Prop({
-    required: true,
-  })
+  @Prop({ required: true })
   public dateBirth: Date;
 
   @Prop({
@@ -21,19 +19,13 @@ export class UserModel extends Document implements User {
   })
   public email: string;
 
-  @Prop({
-    required: true,
-  })
+  @Prop({ required: true })
   public firstname: string;
 
-  @Prop({
-    required: true,
-  })
+  @Prop({ required: true })
   public lastname: string;
 
-  @Prop({
-    required: true,
-  })
+  @Prop({ required: true })
   public passwordHash: string;
 
   @Prop({

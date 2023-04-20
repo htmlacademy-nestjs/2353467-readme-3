@@ -3,6 +3,7 @@ import { IPost } from "@project/shared/app-types";
 import { PostEntity } from "./posts.entity";
 import { PrismaService } from "../prisma/prisma.service";
 import { CRUDRepository } from "@project/util/util-types";
+import { PostQuery } from './posts.query';
 
 @Injectable()
 export class PostsRepository implements CRUDRepository<PostEntity, number, IPost> {
@@ -11,13 +12,30 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   // Get all posts with params
 
-  public async findAll(params): Promise<IPost[]> {
+  public async findAll(params: PostQuery): Promise<IPost[]> {
     return this.prisma.post.findMany({
+      where: {
+        userID: {
+          in: params.users
+        },
+        tags: {
+          some: {
+            id: {
+              in: params.tags
+            }
+          }
+        }
+      },
+      take: params.limit,
       include: {
         comments: true,
         tags: true,
         likes: true,
       },
+      orderBy: [
+        { createdAt: params.sort }
+      ],
+      skip: params.page > 0 ? params.limit * (params.page - 1) : undefined,
     });
   }
 

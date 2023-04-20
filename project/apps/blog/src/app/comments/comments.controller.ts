@@ -1,4 +1,4 @@
-import {Body, Controller, HttpStatus, Post, Delete, Param, Get, Query, HttpCode} from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Delete, Param, Get, Query, HttpCode } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -28,8 +28,8 @@ export class CommentsController {
     description: 'Comments by ID',
   })
   @Get(':id')
-  public async find(@Param('id') id: string) {
-    return this.commentService.find(Number(id));
+  public async find(@Param('id') id: number) {
+    return this.commentService.find(id);
   }
 
 
@@ -49,7 +49,7 @@ export class CommentsController {
     description: 'Comment update.',
   })
   @Post()
-  public update(@Param('id') id: string, @Body() commentData: CreateCommentDto) {
+  public update(@Param('id') id: number, @Body() commentData: CreateCommentDto) {
     return this.commentService.update(Number(id), commentData);
   }
 

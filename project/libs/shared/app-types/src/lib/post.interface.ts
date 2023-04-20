@@ -38,10 +38,3 @@ export type IPost =
   | PostPhoto
   | PostQuote
   | PostLink;
-
-export interface PostParams {
-  sort?: string;
-  limit?: number;
-  page?: number;
-  users?: number;
-}

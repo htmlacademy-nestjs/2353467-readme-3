@@ -5,7 +5,7 @@ import { AuthenticationService } from './authentication.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 
-@ApiTags('authentication')
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(

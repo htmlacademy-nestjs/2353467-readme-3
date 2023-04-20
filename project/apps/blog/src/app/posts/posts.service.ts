@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IPost, PostParams } from '@project/shared/app-types';
+import { IPost } from '@project/shared/app-types';
 import { PostsRepository } from './posts.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostFactory } from './posts.factory';
+import { PostQuery } from './posts.query';
 
 @Injectable()
 export class PostsService {
@@ -11,7 +12,7 @@ export class PostsService {
     private readonly postsRepository: PostsRepository
   ) { }
 
-  public async findAll(params: PostParams): Promise<IPost[]>  {
+  public async findAll(params: PostQuery): Promise<IPost[]>  {
     const posts = await this.postsRepository.findAll(params);
     return posts.map((post) => {
       const postFactory = new PostFactory();

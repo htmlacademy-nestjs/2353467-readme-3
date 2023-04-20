@@ -23,7 +23,12 @@ class BasePostEntity implements BasePost {
   }
 
   public toObject() {
-    return { ...this };
+    return {
+      ...this,
+      tags: [ ...this.tags ],
+      comments: [ ...this.comments ],
+      likes: [ ...this.likes ],
+    };
   }
 }
 

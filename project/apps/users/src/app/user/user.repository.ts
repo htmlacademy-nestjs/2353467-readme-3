@@ -5,6 +5,7 @@ import { User } from '@project/shared/app-types';
 import { UserModel } from './user.model';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+const ObjectId = require('mongoose').Types.ObjectId;
 
 @Injectable()
 export class UserRepository implements CRUDRepository<UserEntity, string, User> {

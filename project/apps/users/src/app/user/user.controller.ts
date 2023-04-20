@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserRdo } from './rdo/user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillObject } from '@project/util/util-core';
+import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 
 @ApiTags('Users')
 @Controller('users')
@@ -14,24 +14,23 @@ export class UserController {
 
   @ApiResponse({
     type: UserRdo,
-    status: HttpStatus.CREATED,
-    description: 'The new user has been successfully created.',
-  })
-  @Post()
-  public create(@Body() userData: CreateUserDto) {
-    const user = this.userService.register(userData);
-
-    return fillObject(UserRdo, user);
-  }
-
-  @ApiResponse({
-    type: UserRdo,
     status: HttpStatus.OK,
     description: 'User found'
   })
   @Get(':id')
-  public get(@Param('id') id: string) {
-    const user = this.userService.get(id);
-    return fillObject(UserRdo, user);
+  public find(@Param('id', MongoidValidationPipe) id: string) {
+    return this.userService.find(id);
   }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.CREATED,
+    description: 'The new user has been successfully created.',
+  })
+  @Post('/')
+  public create(@Body() userData: CreateUserDto) {
+    return this.userService.create(userData);
+  }
+
+
 }

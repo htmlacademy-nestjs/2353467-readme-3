@@ -3,6 +3,7 @@ import { Tag } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { TagEntity } from './tags.entity';
 import { PrismaService } from '../prisma/prisma.service';
+import { log } from 'console';
 
 @Injectable()
 export class TagsRepository implements CRUDRepository<TagEntity, number, Tag> {
@@ -28,6 +29,7 @@ export class TagsRepository implements CRUDRepository<TagEntity, number, Tag> {
 
   public async create(tagData: TagEntity): Promise<Tag> {
     const entity = tagData.toObject();
+
     return this.prisma.tag.create({
       data: {
         ...entity,
