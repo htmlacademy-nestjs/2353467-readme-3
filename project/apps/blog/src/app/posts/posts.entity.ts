@@ -1,4 +1,5 @@
 import { BasePost, Like, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo, Tag } from "@project/shared/app-types";
+import { Number } from "mongoose";
 
 class BasePostEntity implements BasePost {
   public id: number;
@@ -10,9 +11,7 @@ class BasePostEntity implements BasePost {
   public createdAt: Date;
   public updatedAt: Date;
   // relationship
-  public comments: Comment[];
-  public tags: Tag[];
-  public likes: Like[];
+  public tags: number[];
 
   constructor(post: BasePost) {
     this.title = post.title;
@@ -20,14 +19,13 @@ class BasePostEntity implements BasePost {
     this.createdAt = post.createdAt;
     this.updatedAt = post.updatedAt;
     this.published = post.published;
+    this.tags = post.tags;
   }
 
   public toObject() {
     return {
       ...this,
-      tags: [ ...this.tags ],
-      comments: [ ...this.comments ],
-      likes: [ ...this.likes ],
+      tags: { connect: this.tags.map(tag => ({ id: tag })) },
     };
   }
 }

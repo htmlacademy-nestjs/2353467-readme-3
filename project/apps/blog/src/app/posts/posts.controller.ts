@@ -18,7 +18,7 @@ export class PostsController {
     status: HttpStatus.OK,
     description: 'List posts',
   })
-  @Get()
+  @Get('/')
   public async findAll(@Query() params: PostQuery) {
     return await this.postsService.findAll(params);
   }

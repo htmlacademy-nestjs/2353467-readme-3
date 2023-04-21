@@ -1,31 +1,43 @@
 import { Injectable } from "@nestjs/common";
-import { IPost } from "@project/shared/app-types";
+import { PostConditions } from "@project/shared/app-types";
 import { PostEntity } from "./posts.entity";
 import { PrismaService } from "../prisma/prisma.service";
-import { CRUDRepository } from "@project/util/util-types";
 import { PostQuery } from './posts.query';
 
 @Injectable()
-export class PostsRepository implements CRUDRepository<PostEntity, number, IPost> {
+export class PostsRepository {
 
   constructor(private readonly prisma: PrismaService) {}
 
   // Get all posts with params
 
-  public async findAll(params: PostQuery): Promise<IPost[]> {
-    return this.prisma.post.findMany({
-      where: {
-        userID: {
-          in: params.users
-        },
-        tags: {
-          some: {
-            id: {
-              in: params.tags
-            }
+  public async findAll(params: PostQuery) {
+    const where: PostConditions = {};
+
+    if (params.tags) {
+      where.tags = {
+        some: {
+          id: {
+            in: params.tags
           }
         }
-      },
+      };
+    }
+
+    if (params.types) {
+      where.type = {
+        in: params.types
+      };
+    }
+
+    if (params.users) {
+      where.userID = {
+        in: params.users
+      };
+    }
+
+    return this.prisma.post.findMany({
+      where: where,
       take: params.limit,
       include: {
         comments: true,
@@ -41,7 +53,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   // Find post by ID
 
-  public async find(id: number): Promise<IPost> {
+  public async find(id: number) {
     return this.prisma.post.findFirst({
       where: { id },
       include: {
@@ -54,21 +66,16 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   // Create post
 
-  public async create(postData: PostEntity ): Promise<IPost | null> {
+  public async create(postData: PostEntity ) {
     const entity = postData.toObject();
     return this.prisma.post.create({
-      data: { ...entity },
-      include: {
-        comments: true,
-        tags: true,
-        likes: true,
-      },
+      data: { ...entity }
     });
   }
 
   // Update post
 
-  public async update(id: number, postData: PostEntity): Promise<IPost | null> {
+  public async update(id: number, postData: PostEntity) {
     const entity = postData.toObject();
     return this.prisma.post.update({
       where: { id },
@@ -80,7 +87,6 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
       },
     });
   }
-
 
   // Remove post
 
