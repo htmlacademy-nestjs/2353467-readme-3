@@ -1,48 +1,45 @@
 import { Injectable } from '@nestjs/common';
-import { IPost } from '@project/shared/app-types';
-import { PostsMemoryRepository } from './posts-memory.repository';
-import { PostConnectionsTypes } from "./posts-connections-types";
+import { IPost, PostParams } from '@project/shared/app-types';
+import { PostsRepository } from './posts.repository';
+import { CreatePostDto } from './dto/create-post.dto';
+import { PostFactory } from './posts.factory';
 
 @Injectable()
 export class PostsService {
 
   constructor(
-    private readonly postsRepository: PostsMemoryRepository
+    private readonly postsRepository: PostsRepository
   ) { }
 
-  private getConnectionType(type) {
-    return PostConnectionsTypes.find(connectionType => connectionType.type === type);
+  public async findAll(params: PostParams): Promise<IPost[]>  {
+    const posts = await this.postsRepository.findAll(params);
+    return posts.map((post) => {
+      const postFactory = new PostFactory();
+      return postFactory.getRDO(post);
+    });
   }
 
-  // Get all posts
-
-  public all(params): Promise<IPost[]>  {
-    return this.postsRepository.all(params);
+  public async find(id: number): Promise<IPost>  {
+    const post = await this.postsRepository.find(id);
+    const postFactory = new PostFactory();
+    return postFactory.getRDO(post);
   }
 
-  // Create post
-
-  public async create(postData): Promise<IPost>  {
-    const connectionType = this.getConnectionType(postData.type);
-    const postEntity = new connectionType.entity(postData)
-      .setCreatedAt()
-      .setUpdatedAt();
-    return await this.postsRepository.create(postEntity);
+  public async create(postData: CreatePostDto): Promise<IPost>  {
+    const postFactory = new PostFactory();
+    const entity = postFactory.getEntity(postData);
+    const post = await this.postsRepository.create(entity);
+    return postFactory.getRDO(post)
   }
 
-  // Update post
-
-  public update(id: string, postData) {
-    const connectionType = this.getConnectionType(postData.type);
-    const postEntity = new connectionType.entity(postData)
-      .setUpdatedAt();
-    return this.postsRepository.update(id, postEntity);
+  public async update(id: number, postData: CreatePostDto) {
+    const postFactory = new PostFactory();
+    const entity = postFactory.getEntity(postData);
+    const post = await this.postsRepository.update(id, entity);
+    return postFactory.getRDO(post)
   }
 
-  // Remove post
-
-  public destroy(id: string) {
+  public destroy(id: number) {
     this.postsRepository.destroy(id);
   }
-
 }

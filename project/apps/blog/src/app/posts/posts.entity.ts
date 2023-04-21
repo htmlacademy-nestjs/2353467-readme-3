@@ -1,40 +1,30 @@
-import dayjs from 'dayjs';
-import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo } from "@project/shared/app-types";
+import { BasePost, Like, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo, Tag } from "@project/shared/app-types";
 
 class BasePostEntity implements BasePost {
-
-  public _id: string;
-  public title: string;
-  public tags: string[];
+  public id: number;
   public type: PostType;
+  public title: string;
+  public data: object;
   public userID: string;
-  public createdAt: number;
-  public updatedAt: number;
+  public published: boolean;
+  public createdAt: Date;
+  public updatedAt: Date;
+  // relationship
+  public comments: Comment[];
+  public tags: Tag[];
+  public likes: Like[];
 
   constructor(post: BasePost) {
-    this._id = post._id;
     this.title = post.title;
-    this.tags = post.tags;
-    this.type = post.type;
     this.userID = post.userID;
     this.createdAt = post.createdAt;
     this.updatedAt = post.updatedAt;
+    this.published = post.published;
   }
 
   public toObject() {
     return { ...this };
   }
-
-  public setCreatedAt() {
-    this.createdAt = dayjs().unix();
-    return this;
-  }
-
-  public setUpdatedAt() {
-    this.updatedAt = dayjs().unix();
-    return this;
-  }
-
 }
 
 export class PostTextEntity extends BasePostEntity {
@@ -42,7 +32,8 @@ export class PostTextEntity extends BasePostEntity {
 
   constructor(post: PostText) {
     super(post);
-    this.anonce = post.anonce;
+    this.type = PostType.Text;
+    this.data = { anonce: post.anonce };
   }
 }
 
@@ -51,7 +42,8 @@ export class PostVideoEntity extends BasePostEntity {
 
   constructor(post: PostVideo) {
     super(post);
-    this.video = post.video;
+    this.type = PostType.Video;
+    this.data = { video: post.video };
   }
 }
 
@@ -60,7 +52,8 @@ export class PostPhotoEntity extends BasePostEntity {
 
   constructor(post: PostPhoto) {
     super(post);
-    this.photo = post.photo;
+    this.type = PostType.Photo;
+    this.data = { photo: post.photo };
   }
 }
 
@@ -69,7 +62,8 @@ export class PostQuoteEntity extends BasePostEntity {
 
   constructor(post: PostQuote) {
     super(post);
-    this.quote = post.quote;
+    this.type = PostType.Quote;
+    this.data = { quote: post.quote };
   }
 }
 
@@ -78,7 +72,8 @@ export class PostLinkEntity extends BasePostEntity {
 
   constructor(post: PostLink) {
     super(post);
-    this.link = post.link;
+    this.type = PostType.Link;
+    this.data = { link: post.link };
   }
 }
 

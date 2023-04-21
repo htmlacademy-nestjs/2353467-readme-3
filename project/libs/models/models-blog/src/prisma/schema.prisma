@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../../../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id              Int      @id @default(autoincrement())
+  type            String   @default("")
+  title           String   @default("")
+  data            Json     @default("{}")
+  userID          String   @default("") @map("user_id")
+  originalUserID  String   @default("") @map("original_user_id")
+  published       Boolean  @default(true)
+  createdAt       DateTime @default(now()) @map("created_at")
+  publishAt       DateTime @updatedAt @map("publish_at")
+
+  tags            Tag[]
+  comments        Comment[]
+  likes           Like[]
+
+  @@map("posts")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  text       String   @default("")
+  postID     Int      @default(0) @map("post_id")
+  userID     String   @default("") @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  post       Post?    @relation(fields: [postID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Tag {
+  id          Int      @id @default(autoincrement())
+  title       String   @default("")
+
+  posts       Post[]
+
+  @@map("tags")
+}
+
+model Like {
+  id          Int      @id @default(autoincrement())
+  postID      Int      @default(0) @map("post_id")
+  userID      String   @default("") @map("user_id")
+
+  post        Post?    @relation(fields: [postID], references: [id], onDelete: Cascade)
+
+  @@map("likes")
+}

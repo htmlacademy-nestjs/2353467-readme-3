@@ -14,7 +14,7 @@ export class UserMemoryRepository implements CRUDRepository<UserEntity, string, 
     return entry;
   }
 
-  public async findById(id: string): Promise<User> {
+  public async find(id: string): Promise<User> {
     const user = this.repository.find(user => user._id === id);
     return user ?? null;
   }
@@ -36,6 +36,6 @@ export class UserMemoryRepository implements CRUDRepository<UserEntity, string, 
 
       return user;
     });
-    return this.findById(id);
+    return this.find(id);
   }
 }

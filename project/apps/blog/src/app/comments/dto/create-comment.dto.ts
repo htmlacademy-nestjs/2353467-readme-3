@@ -12,7 +12,7 @@ export class CreateCommentDto {
     description: 'Post ID',
     example: '123'
   })
-  public postID: string;
+  public postID: number;
 
   @ApiProperty({
     description: 'UserID send comment',

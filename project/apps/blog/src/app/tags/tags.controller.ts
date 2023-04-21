@@ -1,10 +1,8 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { TagRdo } from './rdo/tag.rdo';
 import { TagsService } from './tags.service';
-import { fillObject } from '@project/util/util-core';
-import { TagEntity } from './tags.entity';
 
 @ApiTags('Tags')
 @Controller('tags')
@@ -14,7 +12,7 @@ export class TagsController {
     private readonly tagsService: TagsService
   ) { }
 
-  // Get all tags
+  // Get list tags
 
   @ApiResponse({
     type: TagRdo,
@@ -22,9 +20,20 @@ export class TagsController {
     description: 'List tags.',
   })
   @Get()
-  public all() {
-    const tags = this.tagsService.all();
-    return tags.map(item => fillObject(TagRdo, item));
+  public findAll() {
+    return this.tagsService.findAll();
+  }
+
+  // Get tag by id
+
+  @ApiResponse({
+    type: TagRdo,
+    status: HttpStatus.OK,
+    description: 'Tag by ID',
+  })
+  @Get(':id')
+  public find(@Param('id') id: number) {
+    return this.tagsService.find(id);
   }
 
   // Create tag
@@ -32,12 +41,11 @@ export class TagsController {
   @ApiResponse({
     type: CreateTagDto,
     status: HttpStatus.CREATED,
-    description: 'Tag successfully add.',
+    description: 'Tag added',
   })
   @Post()
   public create(@Body() tagData: CreateTagDto) {
-    const tag = this.tagsService.create(tagData);
-    return fillObject(TagRdo, tag);
+    return this.tagsService.create(tagData);
   }
 
   // Update tag
@@ -45,27 +53,24 @@ export class TagsController {
   @ApiResponse({
     type: TagRdo,
     status: HttpStatus.OK,
-    description: 'Tag updated.',
+    description: 'Tag updated',
   })
   @Put(':id')
-  public update(@Param('id') id: string, @Body() tagData: CreateTagDto) {
-    const tag = this.tagsService.update(id, tagData);
-    return fillObject(TagRdo, tag);
+  public update(@Param('id') id: number, @Body() tagData: CreateTagDto) {
+    return this.tagsService.update(id, tagData);
   }
 
-  // Destroy tag
+  // Remove tag
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Tag remove.',
+    description: 'Tag remove',
   })
   @Delete(':id')
-  public destroy(@Param('id') id: string) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public destroy(@Param('id') id: number) {
     this.tagsService.destroy(id);
   }
-
-
-
 
 
 }

@@ -6,7 +6,7 @@ export class CreateLikeDto {
     description: 'Post ID',
     example: ''
   })
-  public postID: string;
+  public postID: number;
 
   @ApiProperty({
     description: 'User ID',

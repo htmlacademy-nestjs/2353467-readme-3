@@ -1,9 +1,8 @@
-import {Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { fillObject } from '@project/util/util-core';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostConnectionsTypes } from "./posts-connections-types";
+import { PostParams } from '@project/shared/app-types';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -13,59 +12,58 @@ export class PostsController {
     private readonly postsService: PostsService
   ) { }
 
-  private transformPostToDto(post) {
-
-    const postConnectionType = PostConnectionsTypes.find(connectionType => connectionType.type === post.type);
-    if (postConnectionType) {
-      return fillObject(postConnectionType.rdo, post);
-    }
-  }
-
   // Get all posts
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'List tags.',
+    description: 'List posts',
   })
   @Get()
-  public async all(@Query() params) {
-    const posts = await this.postsService.all(params);
-    return posts.map(post => this.transformPostToDto(post));
+  public async findAll(@Query() params: PostParams) {
+    return await this.postsService.findAll(params);
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Post by ID',
+  })
+  @Get(':id')
+  public async find(@Param('id') id: string) {
+    return await this.postsService.find(Number(id));
   }
 
   // Create post
 
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'Comment successfully add.',
+    description: 'Post successfully add',
   })
   @Post()
   public async create(@Body() postData: CreatePostDto) {
-    const post = await this.postsService.create(postData);
-    return this.transformPostToDto(post);
+    return await this.postsService.create(postData);
   }
 
   // Update post
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Post updated.',
+    description: 'Post updated',
   })
   @Put(':id')
-  public update(@Param('id') id: string, @Body() postData: CreatePostDto) {
-    const post = this.postsService.update(id, postData);
-    return this.transformPostToDto(post);
+  public update(@Param('id') id: number, @Body() postData: CreatePostDto) {
+    return this.postsService.update(id, postData);
   }
 
   // Remove post
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Post remove.',
+    description: 'Post remove',
   })
   @Delete(':id')
-  public destroy(@Param('id') id: string) {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public destroy(@Param('id') id: number) {
     this.postsService.destroy(id);
-    return true;
   }
+
 }
