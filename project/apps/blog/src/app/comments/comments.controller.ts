@@ -3,6 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
+import { CommentQuery } from './comments.query';
 
 @ApiTags('Comments')
 @Controller('comments')
@@ -18,7 +19,7 @@ export class CommentsController {
     description: 'List comments.',
   })
   @Get()
-  public async findAll(@Query() params) {
+  public async findAll(@Query() params: CommentQuery) {
     return this.commentService.findAll(params);
   }
 

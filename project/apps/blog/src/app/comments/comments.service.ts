@@ -4,6 +4,7 @@ import { CommentEntity } from './comments.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { fillObject } from '@project/util/util-core';
 import { CommentRdo } from './rdo/comment.rdo';
+import { CommentQuery } from './comments.query';
 
 @Injectable()
 export class CommentsService {
@@ -12,7 +13,7 @@ export class CommentsService {
     private readonly commentsRepository: CommentsRepository
   ) { }
 
-  public async findAll(params) {
+  public async findAll(params: CommentQuery) {
     const comments = await this.commentsRepository.findAll(params);
     return comments.map(item => fillObject(CommentRdo, item));
   }
