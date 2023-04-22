@@ -1,5 +1,4 @@
-import { BasePost, Like, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo, Tag } from "@project/shared/app-types";
-import { Number } from "mongoose";
+import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo } from "@project/shared/app-types";
 
 class BasePostEntity implements BasePost {
   public id: number;
