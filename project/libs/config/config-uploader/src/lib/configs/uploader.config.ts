@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { validateSync } from 'class-validator';
-import { UploaderValidation } from './uploader.validation';
+import { UploaderValidation } from '../validations/uploader.validation';
 import { plainToInstance } from 'class-transformer';
 
 const DEFAULT_PORT = 3000;
@@ -21,7 +21,7 @@ export interface UploaderConfig {
   }
 }
 
-export default registerAs('application', (): UploaderConfig => {
+export default registerAs('uploader', (): UploaderConfig => {
   const config: UploaderConfig = {
     serveRoot: process.env.SERVE_ROOT,
     environment: process.env.NODE_ENV,

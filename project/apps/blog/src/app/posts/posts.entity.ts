@@ -28,6 +28,8 @@ class BasePostEntity implements BasePost {
       tags: { connect: this.tags.map(tag => ({ id: tag })) },
     };
   }
+
+
 }
 
 export class PostTextEntity extends BasePostEntity {

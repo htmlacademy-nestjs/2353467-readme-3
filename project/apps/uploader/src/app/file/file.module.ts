@@ -10,7 +10,7 @@ import { FileModel, FileSchema } from './file.model';
 @Module({
   imports: [
     ServeStaticModule.forRootAsync({
-      inject: [ConfigService],
+      inject: [ ConfigService ],
       useFactory: (configService: ConfigService) => {
         const rootPath = configService.get<string>('application.uploadDirectory');
         const serveRoot = configService.get<string>('application.serveRoot');

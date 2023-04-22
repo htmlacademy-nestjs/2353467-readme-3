@@ -29,6 +29,4 @@ export class AuthenticationController {
     const loggedUser = await this.authService.createToken(user);
     return fillObject(LoggedUserRdo, Object.assign(user, loggedUser));
   }
-
-
 }

@@ -1,4 +1,4 @@
-import {IsNumber, IsString, Max, Min} from "class-validator";
+import { IsNumber, IsString, Max, Min } from "class-validator";
 
 const MIN_PORT = 0;
 const MAX_PORT = 65535;
