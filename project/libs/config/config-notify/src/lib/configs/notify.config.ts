@@ -1,16 +1,14 @@
 import { registerAs } from '@nestjs/config';
 import { validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { UploaderValidation } from '../validations/uploader.validation';
-
+import { NotifyValidation } from '../validations/notify.validation';
 
 const DEFAULT_PORT = 3000;
 const DEFAULT_MONGO_PORT = 27017;
+const DEFAULT_RABBIT_PORT = 5672;
 
-export interface UploaderConfig {
-  serveRoot: string;
+export interface NotifyConfig {
   environment: string;
-  uploadDirectory: string;
   port: number;
   db: {
     host: string;
@@ -19,14 +17,20 @@ export interface UploaderConfig {
     name: string;
     password: string;
     authBase: string;
+  },
+  rabbit: {
+    host: string;
+    password: string;
+    user: string;
+    queue: string;
+    exchange: string;
+    port: number;
   }
 }
 
-export default registerAs('uploader', (): UploaderConfig => {
-  const config: UploaderConfig = {
-    serveRoot: process.env.SERVE_ROOT,
+export default registerAs('application', (): NotifyConfig => {
+  const config: NotifyConfig = {
     environment: process.env.NODE_ENV,
-    uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH,
     port: parseInt(process.env.PORT || DEFAULT_PORT.toString(), 10),
     db: {
       host: process.env.MONGO_HOST,
@@ -35,17 +39,25 @@ export default registerAs('uploader', (): UploaderConfig => {
       user: process.env.MONGO_USER,
       password: process.env.MONGO_PASSWORD,
       authBase: process.env.MONGO_AUTH_BASE,
+    },
+    rabbit: {
+      host: process.env.RABBIT_HOST,
+      password: process.env.RABBIT_PASSWORD,
+      port: parseInt(process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(), 10),
+      user: process.env.RABBIT_USER,
+      queue: process.env.RABBIT_QUEUE,
+      exchange: process.env.RABBIT_EXCHANGE,
     }
   };
 
-  const uploaderEnvironment = plainToInstance(
-    UploaderValidation,
+  const notifyEnvironment = plainToInstance(
+    NotifyValidation,
     config,
     { enableImplicitConversion: true }
   );
 
   const errors = validateSync(
-    uploaderEnvironment, {
+    notifyEnvironment, {
       skipMissingProperties: false
     }
   );
