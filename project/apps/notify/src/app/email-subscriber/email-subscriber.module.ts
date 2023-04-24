@@ -14,7 +14,7 @@ import { getRabbitMQOptions } from '@project/util/util-core';
     ]),
     RabbitMQModule.forRootAsync(
       RabbitMQModule,
-      getRabbitMQOptions('application.rabbit')
+      getRabbitMQOptions('notyfy.rabbit')
     ),
   ],
   controllers: [EmailSubscriberController],

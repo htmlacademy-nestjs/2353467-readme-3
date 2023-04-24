@@ -6,6 +6,7 @@ import { NotifyValidation } from '../validations/notify.validation';
 const DEFAULT_PORT = 3000;
 const DEFAULT_MONGO_PORT = 27017;
 const DEFAULT_RABBIT_PORT = 5672;
+const DEFAULT_SMTP_PORT = 25;
 
 export interface NotifyConfig {
   environment: string;
@@ -25,10 +26,17 @@ export interface NotifyConfig {
     queue: string;
     exchange: string;
     port: number;
-  }
+  },
+  mail: {
+    host: string;
+    port: number;
+    user: string;
+    password: string;
+    from: string;
+  },
 }
 
-export default registerAs('application', (): NotifyConfig => {
+export default registerAs('notify', (): NotifyConfig => {
   const config: NotifyConfig = {
     environment: process.env.NODE_ENV,
     port: parseInt(process.env.PORT || DEFAULT_PORT.toString(), 10),
@@ -42,13 +50,21 @@ export default registerAs('application', (): NotifyConfig => {
     },
     rabbit: {
       host: process.env.RABBIT_HOST,
-      password: process.env.RABBIT_PASSWORD,
       port: parseInt(process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(), 10),
       user: process.env.RABBIT_USER,
+      password: process.env.RABBIT_PASSWORD,
       queue: process.env.RABBIT_QUEUE,
       exchange: process.env.RABBIT_EXCHANGE,
+    },
+    mail: {
+      host: process.env.MAIL_SMTP_HOST,
+      port: parseInt(process.env.MAIL_SMTP_PORT ?? DEFAULT_SMTP_PORT.toString(), 10),
+      user: process.env.MAIL_USER_NAME,
+      password: process.env.MAIL_USER_PASSWORD,
+      from: process.env.MAIL_FROM,
     }
   };
+  console.log(config);
 
   const notifyEnvironment = plainToInstance(
     NotifyValidation,

@@ -21,12 +21,20 @@ export enum ValidationMessageRabbit {
   HostRequired = 'Host Rabbit is required',
   PortRequired = 'Port Rabbit is required',
   UserRequired = 'User Rabbit is required',
-  PasswordRequired = 'Password DB is required',
-  QueueRequired = 'Queue DB is required',
-  ExchangeRequired = 'Exchange DB is required',
+  PasswordRequired = 'Password Rabbit is required',
+  QueueRequired = 'Queue Rabbit is required',
+  ExchangeRequired = 'Exchange Rabbit is required',
 }
 
-export class DB {
+export enum ValidationMessageMail {
+  HostRequired = 'Host Mail is required',
+  PortRequired = 'Port Mail is required',
+  UserRequired = 'User Mail is required',
+  PasswordRequired = 'Password Mail is required',
+  FromRequired = 'From Mail is required',
+}
+
+class DBValidation {
   @IsString({ message: ValidationMessageDB.HostRequired })
   public host: string;
 
@@ -48,11 +56,11 @@ export class DB {
   public authBase: string;
 }
 
-export class Rabbit {
+class RabbitValidation {
   @IsString({ message: ValidationMessageRabbit.HostRequired })
   public host: string;
 
-  @IsString({ message: ValidationMessageRabbit.PortRequired })
+  @IsNumber({}, { message: ValidationMessageRabbit.PortRequired })
   @Min(MIN_PORT)
   @Max(MAX_PORT)
   public port: number;
@@ -70,6 +78,25 @@ export class Rabbit {
   public exchange: string;
 }
 
+class MailValidation {
+  @IsString({ message: ValidationMessageMail.HostRequired })
+  public host: string;
+
+  @IsNumber({}, { message: ValidationMessageMail.PortRequired })
+  @Min(MIN_PORT)
+  @Max(MAX_PORT)
+  public port: number;
+
+  @IsString({ message: ValidationMessageMail.UserRequired })
+  public user: string;
+
+  @IsString({ message: ValidationMessageMail.PasswordRequired })
+  public password: string;
+
+  @IsString({ message: ValidationMessageMail.FromRequired })
+  public from: string;
+}
+
 export class NotifyValidation {
 
   @IsString({ message: ValidationMessage.EnvironmentRequired })
@@ -81,8 +108,13 @@ export class NotifyValidation {
   public port: number;
 
   @ValidateNested()
-  public db: DB;
+  public db: DBValidation;
 
   @ValidateNested()
-  public rabit: Rabbit;
+  public mail: MailValidation;
+
+  @ValidateNested()
+  public rabbit: RabbitValidation;
+
+
 }

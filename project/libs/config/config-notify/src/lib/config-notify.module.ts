@@ -9,7 +9,7 @@ const ENV_FILE_PATH = 'apps/notify/.local.env';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [notifyConfig],
+      load: [ notifyConfig ],
       envFilePath: ENV_FILE_PATH
     }),
   ],

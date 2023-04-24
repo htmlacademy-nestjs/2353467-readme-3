@@ -5,12 +5,14 @@ import { UserRdo } from './rdo/user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly notifyService: NotifyService,
   ) { }
 
   @ApiResponse({
@@ -30,8 +32,11 @@ export class UserController {
     description: 'The new user has been successfully created.',
   })
   @Post('/')
-  public create(@Body() userData: CreateUserDto) {
-    return this.userService.create(userData);
+  public async create(@Body() userData: CreateUserDto) {
+    const user = await this.userService.create(userData);
+    const { email, firstname, lastname } = user;
+    await this.notifyService.registerSubscriber({ email, firstname, lastname });
+    return user;
   }
 
 
