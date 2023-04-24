@@ -1,4 +1,4 @@
-import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo } from "@project/shared/app-types";
+import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo, Tag } from "@project/shared/app-types";
 
 class BasePostEntity implements BasePost {
   public id: number;
@@ -10,7 +10,7 @@ class BasePostEntity implements BasePost {
   public createdAt: Date;
   public updatedAt: Date;
   // relationship
-  public tags: number[];
+  public tags: number[] | Tag[];
 
   constructor(post: BasePost) {
     this.title = post.title;
@@ -27,8 +27,6 @@ class BasePostEntity implements BasePost {
       tags: { connect: this.tags.map(tag => ({ id: tag })) },
     };
   }
-
-
 }
 
 export class PostTextEntity extends BasePostEntity {

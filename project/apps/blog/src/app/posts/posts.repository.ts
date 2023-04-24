@@ -1,17 +1,20 @@
 import { Injectable } from "@nestjs/common";
-import { PostConditions } from "@project/shared/app-types";
+import { CRUDRepository } from '@project/util/util-types';
+import { IPost, PostConditions } from "@project/shared/app-types";
 import { PostEntity } from "./posts.entity";
 import { PrismaService } from "../prisma/prisma.service";
 import { PostQuery } from './posts.query';
 
 @Injectable()
-export class PostsRepository {
+export class PostsRepository implements CRUDRepository<PostEntity, number, IPost>  {
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+  ) {}
 
   // Get all posts with params
 
-  public async findAll(params: PostQuery) {
+  public async findAll(params: PostQuery): Promise<IPost[] | null> {
     const where: PostConditions = {};
 
     if (params.tags) {
@@ -37,7 +40,7 @@ export class PostsRepository {
     }
 
     return this.prisma.post.findMany({
-      where: where,
+      where,
       take: params.limit,
       include: {
         comments: true,
@@ -53,8 +56,8 @@ export class PostsRepository {
 
   // Find post by ID
 
-  public async find(id: number) {
-    return this.prisma.post.findFirst({
+  public async find(id: number): Promise<IPost | null> {
+    const post = this.prisma.post.findFirst({
       where: { id },
       include: {
         comments: true,
@@ -62,11 +65,13 @@ export class PostsRepository {
         likes: true,
       },
     });
+
+    return post;
   }
 
   // Create post
 
-  public async create(postData: PostEntity ) {
+  public async create(postData: PostEntity): Promise<IPost> {
     const entity = postData.toObject();
     return this.prisma.post.create({
       data: { ...entity }
@@ -75,9 +80,9 @@ export class PostsRepository {
 
   // Update post
 
-  public async update(id: number, postData: PostEntity) {
+  public async update(id: number, postData: PostEntity): Promise<IPost> {
     const entity = postData.toObject();
-    return this.prisma.post.update({
+    const post = this.prisma.post.update({
       where: { id },
       data: { ...entity },
       include: {
@@ -86,6 +91,8 @@ export class PostsRepository {
         likes: true,
       },
     });
+
+    return post;
   }
 
   // Remove post

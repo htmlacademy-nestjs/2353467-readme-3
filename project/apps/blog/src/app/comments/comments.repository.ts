@@ -26,7 +26,7 @@ export class CommentsRepository implements CRUDRepository<CommentEntity, number,
     }
 
     return this.prisma.comment.findMany({
-      where: where,
+      where,
       take: params.limit,
       include: {
         post: true,
