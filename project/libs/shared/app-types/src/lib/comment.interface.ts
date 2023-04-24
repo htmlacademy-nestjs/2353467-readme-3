@@ -1,5 +1,3 @@
-import { IPost } from "./post.interface";
-
 export interface Comment {
   id?: number;
   text: string;
@@ -9,6 +7,10 @@ export interface Comment {
 }
 
 export interface CommentConditions {
-  postID?: object;
-  userID?: object;
+  postID?: {
+    in: number[]
+  };
+  userID?: {
+    in: string[]
+  };
 }

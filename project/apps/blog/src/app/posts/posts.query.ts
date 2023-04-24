@@ -26,7 +26,7 @@ export class PostQuery {
   @Transform(({ value }) => value.split(',').map((type: string) => type))
   @IsArray({})
   @IsOptional()
-  public types: PostType;
+  public types: PostType[];
 
   @IsIn(['asc', 'desc'])
   @IsOptional()

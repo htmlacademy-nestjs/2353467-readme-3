@@ -8,7 +8,7 @@ export interface BasePost {
   id?: number;
   type: PostType | string;
   title: string;
-  data?: object | Prisma.JsonValue;
+  data?: Prisma.JsonValue;
   userID: string;
   originalUserID?: string;
   published: boolean;
@@ -49,7 +49,17 @@ export type IPost =
 
 
 export interface PostConditions {
-  tags?: object;
-  userID?: object;
-  type?: object;
+  tags?: {
+    some: {
+      id: {
+        in: number[]
+      }
+    }
+  };
+  userID?: {
+    in: string[]
+  };
+  type?: {
+    in: PostType[]
+  };
 }

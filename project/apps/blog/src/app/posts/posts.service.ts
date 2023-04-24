@@ -33,14 +33,14 @@ export class PostsService {
     return postFactory.getRDO(post)
   }
 
-  public async update(id: number, postData: CreatePostDto) {
+  public async update(id: number, postData: CreatePostDto): Promise<IPost>  {
     const postFactory = new PostFactory();
     const entity = postFactory.getEntity(postData);
     const post = await this.postsRepository.update(id, entity);
     return postFactory.getRDO(post)
   }
 
-  public destroy(id: number) {
+  public destroy(id: number): void {
     this.postsRepository.destroy(id);
   }
 }

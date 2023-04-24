@@ -103,4 +103,16 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
     });
   }
 
+  // Repost
+
+  // public async repost(id: number) {
+  //   const post = this.prisma.post.findFirst({
+  //     where: { id },
+  //   });
+
+  //   return this.prisma.post.create({
+  //     data: { ...post, userID: 's', originalUserID: post.userID }
+  //   });
+  // }
+
 }

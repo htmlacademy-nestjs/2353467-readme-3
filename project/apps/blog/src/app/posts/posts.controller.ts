@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -65,5 +65,11 @@ export class PostsController {
   public destroy(@Param('id') id: number) {
     this.postsService.destroy(id);
   }
+
+  // @Post('/:id/repost')
+  // @UseGuards(JwtAuthGuard)
+  // public repost(@Param('id') id: number) {
+  //   this.postsService.destroy(id);
+  // }
 
 }

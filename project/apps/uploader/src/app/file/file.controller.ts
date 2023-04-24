@@ -7,7 +7,7 @@ import { fillObject } from '@project/util/util-core';
 import { UploadedFileRdo } from './rdo/uploaded-file.rdo';
 import { uploaderConfig } from '@project/config/config-uploader';
 import { ConfigType } from '@nestjs/config';
-import { MongoidValidationPipe } from '@project/shared/shared-pipes';
+import { MongoidValidationPipe } from '@project/shared/pipes';
 
 @Controller('files')
 export class FileController {
