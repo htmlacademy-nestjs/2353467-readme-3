@@ -7,7 +7,7 @@ import { EmailSubscriberModule } from './email-subscriber/email-subscriber.modul
 @Module({
   imports: [
     ConfigNotifyModule,
-    MongooseModule.forRootAsync(getMongooseOptions('application.db')),
+    MongooseModule.forRootAsync(getMongooseOptions('notify.db')),
     EmailSubscriberModule,
   ],
   controllers: [],

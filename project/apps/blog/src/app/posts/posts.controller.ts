@@ -3,6 +3,7 @@ import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostQuery } from './posts.query';
+import { JwtAuthGuard } from '@project/shared/guards';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -66,10 +67,14 @@ export class PostsController {
     this.postsService.destroy(id);
   }
 
-  // @Post('/:id/repost')
-  // @UseGuards(JwtAuthGuard)
-  // public repost(@Param('id') id: number) {
-  //   this.postsService.destroy(id);
-  // }
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Repost',
+  })
+  //@UseGuards(JwtAuthGuard)
+  @Post('/:id/repost')
+  public repost(@Param('id') id: number) {
+    this.postsService.destroy(id);
+  }
 
 }

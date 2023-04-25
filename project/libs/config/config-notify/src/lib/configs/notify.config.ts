@@ -4,7 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { NotifyValidation } from '../validations/notify.validation';
 
 const DEFAULT_PORT = 3000;
-const DEFAULT_MONGO_PORT = 27017;
+const DEFAULT_MONGO_PORT = 27020;
 const DEFAULT_RABBIT_PORT = 5672;
 const DEFAULT_SMTP_PORT = 25;
 
@@ -64,7 +64,9 @@ export default registerAs('notify', (): NotifyConfig => {
       from: process.env.MAIL_FROM,
     }
   };
+
   console.log(config);
+
 
   const notifyEnvironment = plainToInstance(
     NotifyValidation,
