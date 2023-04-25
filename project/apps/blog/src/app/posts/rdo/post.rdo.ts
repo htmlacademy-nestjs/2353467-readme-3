@@ -41,7 +41,7 @@ class BasePostRdo implements BasePost {
 
   @ApiProperty({ description: 'Comments list' })
   @Expose()
-  public tags: Tag[];
+  public tags: number[];
 
   @ApiProperty({ description: 'Comments list' })
   @Expose()

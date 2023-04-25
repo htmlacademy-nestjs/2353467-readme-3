@@ -7,3 +7,8 @@ export interface Comment {
   userID: string;
   createdAt?: Date;
 }
+
+export interface CommentConditions {
+  postID?: object;
+  userID?: object;
+}

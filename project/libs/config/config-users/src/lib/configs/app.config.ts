@@ -1,6 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import { validateSync } from 'class-validator';
-import { AppValidation } from './app.validation';
+import { AppValidation } from '../validatons/app.validation';
 import { plainToInstance } from 'class-transformer';
 
 const DEFAULT_PORT = 3000;

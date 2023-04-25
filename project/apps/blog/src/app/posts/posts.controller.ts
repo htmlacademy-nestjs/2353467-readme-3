@@ -1,8 +1,8 @@
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
-import { PostParams } from '@project/shared/app-types';
+import { PostQuery } from './posts.query';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -18,8 +18,8 @@ export class PostsController {
     status: HttpStatus.OK,
     description: 'List posts',
   })
-  @Get()
-  public async findAll(@Query() params: PostParams) {
+  @Get('/')
+  public async findAll(@Query() params: PostQuery) {
     return await this.postsService.findAll(params);
   }
 
@@ -28,8 +28,8 @@ export class PostsController {
     description: 'Post by ID',
   })
   @Get(':id')
-  public async find(@Param('id') id: string) {
-    return await this.postsService.find(Number(id));
+  public async find(@Param('id') id: number) {
+    return await this.postsService.find(id);
   }
 
   // Create post

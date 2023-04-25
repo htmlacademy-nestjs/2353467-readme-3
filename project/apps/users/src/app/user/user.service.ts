@@ -3,7 +3,9 @@ import { ConflictException, Injectable } from "@nestjs/common";
 import { UserRepository } from "./user.repository";
 import { UserRole, AuthUser } from '@project/shared/app-types';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { UserRdo } from './rdo/user.rdo';
 import { UserEntity } from './user.entity';
+import { fillObject } from '@project/util/util-core';
 
 @Injectable()
 export class UserService {
@@ -11,8 +13,13 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
-  public async register(user: CreateUserDto) {
-    const { email, firstname, lastname, password, dateBirth } = user;
+  public async find(id: string) {
+    const user = this.userRepository.find(id);
+    return fillObject(UserRdo, user);
+  }
+
+  public async create(userData: CreateUserDto) {
+    const { email, firstname, lastname, password, dateBirth } = userData;
 
     const newUser = {
       email,
@@ -31,10 +38,9 @@ export class UserService {
     }
 
     const userEntity = await new UserEntity(newUser).setPassword(password);
-    return this.userRepository.create(userEntity);
+    const user = this.userRepository.create(userEntity);
+    return fillObject(UserRdo, user);
   }
 
-  public async get(id: string) {
-    return this.userRepository.findById(id);
-  }
+
 }

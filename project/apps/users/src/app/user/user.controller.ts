@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserRdo } from './rdo/user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillObject } from '@project/util/util-core';
+import { MongoidValidationPipe } from '@project/shared/shared-pipes';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -14,24 +15,24 @@ export class UserController {
 
   @ApiResponse({
     type: UserRdo,
-    status: HttpStatus.CREATED,
-    description: 'The new user has been successfully created.',
+    status: HttpStatus.OK,
+    description: 'User found'
   })
-  @Post()
-  public create(@Body() userData: CreateUserDto) {
-    const user = this.userService.register(userData);
-
-    return fillObject(UserRdo, user);
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  public find(@Param('id', MongoidValidationPipe) id: string) {
+    return this.userService.find(id);
   }
 
   @ApiResponse({
     type: UserRdo,
-    status: HttpStatus.OK,
-    description: 'User found'
+    status: HttpStatus.CREATED,
+    description: 'The new user has been successfully created.',
   })
-  @Get(':id')
-  public get(@Param('id') id: string) {
-    const user = this.userService.get(id);
-    return fillObject(UserRdo, user);
+  @Post('/')
+  public create(@Body() userData: CreateUserDto) {
+    return this.userService.create(userData);
   }
+
+
 }

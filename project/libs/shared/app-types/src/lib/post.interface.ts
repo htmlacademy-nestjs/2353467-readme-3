@@ -1,4 +1,7 @@
+import { Like } from "./like.interface";
 import { PostType } from "./post-type.enum";
+import { Tag } from "./tag.interface";
+import { Comment } from "./comment.interface";
 
 export interface BasePost {
   id?: number;
@@ -10,6 +13,8 @@ export interface BasePost {
   published: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+
+  tags?: number[];
 }
 
 export interface PostText extends BasePost {
@@ -39,9 +44,9 @@ export type IPost =
   | PostQuote
   | PostLink;
 
-export interface PostParams {
-  sort?: string;
-  limit?: number;
-  page?: number;
-  users?: number;
+
+export interface PostConditions {
+  tags?: object;
+  userID?: object;
+  type?: object;
 }
