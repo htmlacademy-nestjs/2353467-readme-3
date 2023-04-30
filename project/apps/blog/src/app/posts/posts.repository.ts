@@ -1,16 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { CRUDRepository } from '@project/util/util-types';
-import { IPost, PostConditions } from "@project/shared/app-types";
-import { PostEntity } from "./posts.entity";
-import { PrismaService } from "../prisma/prisma.service";
+import { IPost, PostConditions } from '@project/shared/app-types';
+import { PostEntity } from './posts.entity';
+import { PrismaService } from '../prisma/prisma.service';
 import { PostQuery } from './posts.query';
 
 @Injectable()
-export class PostsRepository implements CRUDRepository<PostEntity, number, IPost>  {
-
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+export class PostsRepository
+  implements CRUDRepository<PostEntity, number, IPost>
+{
+  constructor(private readonly prisma: PrismaService) {}
 
   // Get all posts with params
 
@@ -21,21 +20,21 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
       where.tags = {
         some: {
           id: {
-            in: params.tags
-          }
-        }
+            in: params.tags,
+          },
+        },
       };
     }
 
     if (params.types) {
       where.type = {
-        in: params.types
+        in: params.types,
       };
     }
 
     if (params.users) {
       where.userID = {
-        in: params.users
+        in: params.users,
       };
     }
 
@@ -47,9 +46,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
         tags: true,
         likes: true,
       },
-      orderBy: [
-        { createdAt: params.sort }
-      ],
+      orderBy: [{ createdAt: params.sort }],
       skip: params.page > 0 ? params.limit * (params.page - 1) : undefined,
     });
   }
@@ -74,7 +71,7 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
   public async create(postData: PostEntity): Promise<IPost> {
     const entity = postData.toObject();
     return this.prisma.post.create({
-      data: { ...entity }
+      data: { ...entity },
     });
   }
 
@@ -105,14 +102,13 @@ export class PostsRepository implements CRUDRepository<PostEntity, number, IPost
 
   // Repost
 
-  // public async repost(id: number) {
-  //   const post = this.prisma.post.findFirst({
-  //     where: { id },
-  //   });
+  public async repost(id: number): Promise<void> {
+    const post = await this.prisma.post.findFirst({
+      where: { id },
+    });
 
-  //   return this.prisma.post.create({
-  //     data: { ...post, userID: 's', originalUserID: post.userID }
-  //   });
-  // }
-
+    this.prisma.post.create({
+      data: { ...post, userID: 's', originalUserID: post.userID },
+    });
+  }
 }

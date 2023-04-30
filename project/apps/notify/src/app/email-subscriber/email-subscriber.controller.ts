@@ -9,13 +9,13 @@ import { MailService } from '../mail/mail.service';
 export class EmailSubscriberController {
   constructor(
     private readonly subscriberService: EmailSubscriberService,
-    private readonly mailService: MailService,
+    private readonly mailService: MailService
   ) {}
 
   @RabbitSubscribe({
-    exchange: 'typoteka.notify',
+    exchange: 'notify',
     routingKey: RabbitRouting.AddSubscriber,
-    queue: 'typoteka.notify',
+    queue: 'notify',
   })
   public async create(subscriber: CreateSubscriberDto) {
     this.subscriberService.addSubscriber(subscriber);

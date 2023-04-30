@@ -18,7 +18,7 @@ export interface NotifyConfig {
     name: string;
     password: string;
     authBase: string;
-  },
+  };
   rabbit: {
     host: string;
     password: string;
@@ -26,14 +26,14 @@ export interface NotifyConfig {
     queue: string;
     exchange: string;
     port: number;
-  },
+  };
   mail: {
     host: string;
     port: number;
     user: string;
     password: string;
     from: string;
-  },
+  };
 }
 
 export default registerAs('notify', (): NotifyConfig => {
@@ -42,7 +42,10 @@ export default registerAs('notify', (): NotifyConfig => {
     port: parseInt(process.env.PORT || DEFAULT_PORT.toString(), 10),
     db: {
       host: process.env.MONGO_HOST,
-      port: parseInt(process.env.MONGO_PORT ?? DEFAULT_MONGO_PORT.toString(), 10),
+      port: parseInt(
+        process.env.MONGO_PORT ?? DEFAULT_MONGO_PORT.toString(),
+        10
+      ),
       name: process.env.MONGO_DB,
       user: process.env.MONGO_USER,
       password: process.env.MONGO_PASSWORD,
@@ -50,7 +53,10 @@ export default registerAs('notify', (): NotifyConfig => {
     },
     rabbit: {
       host: process.env.RABBIT_HOST,
-      port: parseInt(process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(), 10),
+      port: parseInt(
+        process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(),
+        10
+      ),
       user: process.env.RABBIT_USER,
       password: process.env.RABBIT_PASSWORD,
       queue: process.env.RABBIT_QUEUE,
@@ -58,27 +64,23 @@ export default registerAs('notify', (): NotifyConfig => {
     },
     mail: {
       host: process.env.MAIL_SMTP_HOST,
-      port: parseInt(process.env.MAIL_SMTP_PORT ?? DEFAULT_SMTP_PORT.toString(), 10),
+      port: parseInt(
+        process.env.MAIL_SMTP_PORT ?? DEFAULT_SMTP_PORT.toString(),
+        10
+      ),
       user: process.env.MAIL_USER_NAME,
       password: process.env.MAIL_USER_PASSWORD,
       from: process.env.MAIL_FROM,
-    }
+    },
   };
 
-  console.log(config);
+  const notifyEnvironment = plainToInstance(NotifyValidation, config, {
+    enableImplicitConversion: true,
+  });
 
-
-  const notifyEnvironment = plainToInstance(
-    NotifyValidation,
-    config,
-    { enableImplicitConversion: true }
-  );
-
-  const errors = validateSync(
-    notifyEnvironment, {
-      skipMissingProperties: false
-    }
-  );
+  const errors = validateSync(notifyEnvironment, {
+    skipMissingProperties: false,
+  });
 
   if (errors.length > 0) {
     throw new Error(errors.toString());

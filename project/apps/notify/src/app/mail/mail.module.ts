@@ -3,16 +3,9 @@ import { getMailerAsyncOptions } from '@project/util/util-core';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailService } from './mail.service';
 
-
 @Module({
-  imports: [
-    MailerModule.forRootAsync(getMailerAsyncOptions('mail'))
-  ],
-  providers: [
-    MailService
-  ],
-  exports: [
-    MailService
-  ]
+  imports: [MailerModule.forRootAsync(getMailerAsyncOptions('notify.mail'))],
+  providers: [MailService],
+  exports: [MailService],
 })
 export class MailModule {}

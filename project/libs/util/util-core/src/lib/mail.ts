@@ -13,21 +13,24 @@ export function getMailerAsyncOptions(optionSpace: string): MailerAsyncOptions {
           secure: false,
           auth: {
             user: configService.get<string>(`${optionSpace}.user`),
-            pass: configService.get<string>(`${optionSpace}.password`)
-          }
+            pass: configService.get<string>(`${optionSpace}.password`),
+          },
         },
         defaults: {
           from: configService.get<string>(`${optionSpace}.from`),
         },
         template: {
-          dir: path.resolve(__dirname, 'assets'),
+          dir: path.resolve(
+            '/Users/evgeniybochkarev/Development/htmlacademy/2353467-readme-3/project/apps/notify/src',
+            'assets'
+          ),
           adapter: new HandlebarsAdapter(),
           options: {
-            strict: true
-          }
-        }
-      }
+            strict: true,
+          },
+        },
+      };
     },
     inject: [ConfigService],
-  }
+  };
 }

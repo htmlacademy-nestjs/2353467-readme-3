@@ -74,7 +74,7 @@ export class PostsController {
   //@UseGuards(JwtAuthGuard)
   @Post('/:id/repost')
   public repost(@Param('id') id: number) {
-    this.postsService.destroy(id);
+    this.postsService.repost(id);
   }
 
 }

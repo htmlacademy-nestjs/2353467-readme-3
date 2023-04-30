@@ -43,4 +43,8 @@ export class PostsService {
   public destroy(id: number): void {
     this.postsRepository.destroy(id);
   }
+
+  public repost(id: number): void {
+    this.postsRepository.destroy(id);
+  }
 }
