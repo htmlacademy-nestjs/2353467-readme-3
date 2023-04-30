@@ -20,10 +20,7 @@ export function getMailerAsyncOptions(optionSpace: string): MailerAsyncOptions {
           from: configService.get<string>(`${optionSpace}.from`),
         },
         template: {
-          dir: path.resolve(
-            '/Users/evgeniybochkarev/Development/htmlacademy/2353467-readme-3/project/apps/notify/src',
-            'assets'
-          ),
+          dir: path.resolve(__dirname, 'assets'),
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
