@@ -5,7 +5,7 @@
   "scripts": {
     "users:serve": "nx run users:serve",
     "blog:serve": "nx run blog:serve",
-    "notifications:serve": "nx run notifications:serve"
+    "notify:serve": "nx run notify:serve"
   },
   "private": true,
   "dependencies": {
