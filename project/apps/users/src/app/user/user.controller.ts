@@ -1,10 +1,18 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserRdo } from './rdo/user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
 import { MongoidValidationPipe } from '@project/shared/pipes';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('Users')
@@ -12,13 +20,13 @@ import { NotifyService } from '../notify/notify.service';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly notifyService: NotifyService,
-  ) { }
+    private readonly notifyService: NotifyService
+  ) {}
 
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
-    description: 'User found'
+    description: 'User found',
   })
   @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -38,6 +46,4 @@ export class UserController {
     await this.notifyService.registerSubscriber({ email, firstname, lastname });
     return user;
   }
-
-
 }
