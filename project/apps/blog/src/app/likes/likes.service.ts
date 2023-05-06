@@ -6,18 +6,14 @@ import { Like } from '@project/shared/app-types';
 
 @Injectable()
 export class LikesService {
+  constructor(private readonly likesRepository: LikesRepository) {}
 
-  constructor(
-    private readonly likesRepository: LikesRepository
-  ) { }
-
-  public create(likeData: CreateLikeDto): Promise<Like>  {
-    const likeEntity = new LikeEntity(likeData)
-    return this.likesRepository.create(likeEntity);
+  public async create(likeData: CreateLikeDto): Promise<Like> {
+    const likeEntity = new LikeEntity(likeData);
+    return await this.likesRepository.create(likeEntity);
   }
 
   public destroy(id: number) {
     this.likesRepository.destroy(id);
   }
-
 }

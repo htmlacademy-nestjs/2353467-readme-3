@@ -7,12 +7,9 @@ import { PostQuery } from './posts.query';
 
 @Injectable()
 export class PostsService {
+  constructor(private readonly postsRepository: PostsRepository) {}
 
-  constructor(
-    private readonly postsRepository: PostsRepository
-  ) { }
-
-  public async findAll(params: PostQuery): Promise<IPost[]>  {
+  public async findAll(params: PostQuery): Promise<IPost[]> {
     const posts = await this.postsRepository.findAll(params);
     return posts.map((post) => {
       const postFactory = new PostFactory();
@@ -20,31 +17,31 @@ export class PostsService {
     });
   }
 
-  public async find(id: number): Promise<IPost>  {
+  public async find(id: number): Promise<IPost> {
     const post = await this.postsRepository.find(id);
     const postFactory = new PostFactory();
     return postFactory.getRDO(post);
   }
 
-  public async create(postData: CreatePostDto): Promise<IPost>  {
+  public async create(postData: CreatePostDto): Promise<IPost> {
     const postFactory = new PostFactory();
     const entity = postFactory.getEntity(postData);
     const post = await this.postsRepository.create(entity);
-    return postFactory.getRDO(post)
+    return postFactory.getRDO(post);
   }
 
-  public async update(id: number, postData: CreatePostDto): Promise<IPost>  {
+  public async update(id: number, postData: CreatePostDto): Promise<IPost> {
     const postFactory = new PostFactory();
     const entity = postFactory.getEntity(postData);
     const post = await this.postsRepository.update(id, entity);
-    return postFactory.getRDO(post)
+    return postFactory.getRDO(post);
   }
 
   public destroy(id: number): void {
     this.postsRepository.destroy(id);
   }
 
-  public repost(id: number): void {
-    this.postsRepository.destroy(id);
+  public repost(id: number, userID: string): void {
+    this.postsRepository.repost(id, userID);
   }
 }

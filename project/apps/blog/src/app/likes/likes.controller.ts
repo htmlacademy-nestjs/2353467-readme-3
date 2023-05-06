@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikesService } from './likes.service';
 import { CreateLikeDto } from './dto/create-like.dto';
@@ -6,10 +14,7 @@ import { CreateLikeDto } from './dto/create-like.dto';
 @ApiTags('Likes')
 @Controller('likes')
 export class LikesController {
-
-  constructor(
-    private readonly likesService: LikesService
-  ) { }
+  constructor(private readonly likesService: LikesService) {}
 
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -29,6 +34,4 @@ export class LikesController {
   public destroy(@Param('id') id: number) {
     this.likesService.destroy(id);
   }
-
-
 }

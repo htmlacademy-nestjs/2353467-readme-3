@@ -5,14 +5,15 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserRdo } from './rdo/user.rdo';
+import { UserQuery } from './user.query';
 import { CreateUserDto } from './dto/create-user.dto';
 import { MongoidValidationPipe } from '@project/shared/pipes';
-import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('Users')
@@ -28,7 +29,16 @@ export class UserController {
     status: HttpStatus.OK,
     description: 'User found',
   })
-  @UseGuards(JwtAuthGuard)
+  @Get()
+  public findAll(@Query() params: UserQuery) {
+    return this.userService.findAll(params);
+  }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'User found',
+  })
   @Get(':id')
   public find(@Param('id', MongoidValidationPipe) id: string) {
     return this.userService.find(id);
