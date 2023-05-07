@@ -2,19 +2,22 @@ import { Like } from "./like.interface";
 import { PostType } from "./post-type.enum";
 import { Tag } from "./tag.interface";
 import { Comment } from "./comment.interface";
+import { Prisma } from "@prisma/client";
 
 export interface BasePost {
   id?: number;
-  type: PostType;
+  type: PostType | string;
   title: string;
-  data?: object;
+  data?: Prisma.JsonValue;
   userID: string;
   originalUserID?: string;
   published: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 
-  tags?: number[];
+  tags?: number[] | Tag[];
+  comments?: number[] | Comment[];
+  likes?: number[] | Like[];
 }
 
 export interface PostText extends BasePost {
@@ -34,7 +37,7 @@ export interface PostQuote extends BasePost {
 }
 
 export interface PostLink extends BasePost {
-  link: string;
+  link?: string;
 }
 
 export type IPost =
@@ -46,7 +49,17 @@ export type IPost =
 
 
 export interface PostConditions {
-  tags?: object;
-  userID?: object;
-  type?: object;
+  tags?: {
+    some: {
+      id: {
+        in: number[]
+      }
+    }
+  };
+  userID?: {
+    in: string[]
+  };
+  type?: {
+    in: PostType[]
+  };
 }

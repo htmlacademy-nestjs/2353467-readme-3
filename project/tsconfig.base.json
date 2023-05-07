@@ -15,13 +15,17 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@project/config/config-notify": [
+        "libs/config/config-notify/src/index.ts"
+      ],
       "@project/config/config-uploader": [
         "libs/config/config-uploader/src/index.ts"
       ],
       "@project/config/config-users": ["libs/config/config-users/src/index.ts"],
       "@project/models/models-blog": ["libs/models/models-blog/src/index.ts"],
       "@project/shared/app-types": ["libs/shared/app-types/src/index.ts"],
-      "@project/shared/shared-pipes": ["libs/shared/shared-pipes/src/index.ts"],
+      "@project/shared/guards": ["libs/shared/guards/src/index.ts"],
+      "@project/shared/pipes": ["libs/shared/pipes/src/index.ts"],
       "@project/util/util-core": ["libs/util/util-core/src/index.ts"],
       "@project/util/util-types": ["libs/util/util-types/src/index.ts"]
     }

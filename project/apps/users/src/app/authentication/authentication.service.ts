@@ -34,7 +34,7 @@ export class AuthenticationService {
 
   public async createToken(user: User) {
     const payload: TokenPayload = {
-      sub: user._id,
+      id: user._id,
       email: user.email,
       role: user.role,
       lastname: user.lastname,

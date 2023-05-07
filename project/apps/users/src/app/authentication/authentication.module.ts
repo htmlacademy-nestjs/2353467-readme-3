@@ -11,6 +11,7 @@ import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
   imports: [
     UserModule,
     JwtModule.registerAsync({
+      global: true,
       inject: [ ConfigService ],
       useFactory: getJwtOptions
     })
