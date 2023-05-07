@@ -3,7 +3,6 @@ import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 import { PostsRepository } from './posts.repository';
 import { PrismaService } from '../prisma/prisma.service';
-// import { AuthenticationModule } from '';
 
 @Module({
   imports: [],

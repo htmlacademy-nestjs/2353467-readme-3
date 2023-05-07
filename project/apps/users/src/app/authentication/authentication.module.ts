@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
 import { UserModule } from '../user/user.module';
@@ -11,12 +11,13 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { UserService } from '../user/user.service';
 import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 
+@Global()
 @Module({
   imports: [
     UserModule,
     RefreshTokenModule,
     JwtModule.registerAsync({
-      global: true,
+      //global: true,
       inject: [ConfigService],
       useFactory: getJwtOptions,
     }),

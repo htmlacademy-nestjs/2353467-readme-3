@@ -7,6 +7,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export class LikesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  public async find(id: number): Promise<Like[] | null> {
+    return this.prisma.like.findMany({
+      where: { postID: id },
+    });
+  }
+
   public async create(likeData: LikeEntity): Promise<Like> {
     const entity = likeData.toObject();
     return this.prisma.like.create({

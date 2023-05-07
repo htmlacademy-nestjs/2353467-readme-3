@@ -16,6 +16,8 @@ export class PostsRepository
   public async findAll(params: PostQuery): Promise<IPost[] | null> {
     const where: PostConditions = {};
 
+    where.published = true;
+
     if (params.search) {
       where.title = {
         contains: params.search,

@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikesService } from './likes.service';
@@ -15,6 +17,15 @@ import { CreateLikeDto } from './dto/create-like.dto';
 @Controller('likes')
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
+
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Likes post.',
+  })
+  @Get(':id')
+  public find(@Param('id') id: number) {
+    return this.likesService.find(id);
+  }
 
   @ApiResponse({
     status: HttpStatus.CREATED,

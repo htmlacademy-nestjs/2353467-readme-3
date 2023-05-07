@@ -22,6 +22,7 @@ export interface BasePost {
 
 export interface PostText extends BasePost {
   anonce: string;
+  text: string;
 }
 
 export interface PostVideo extends BasePost {
@@ -34,6 +35,7 @@ export interface PostPhoto extends BasePost {
 
 export interface PostQuote extends BasePost {
   quote: string;
+  author: string;
 }
 
 export interface PostLink extends BasePost {
@@ -43,6 +45,7 @@ export interface PostLink extends BasePost {
 export type IPost = PostText | PostVideo | PostPhoto | PostQuote | PostLink;
 
 export interface PostConditions {
+  published?: boolean;
   title?: {
     contains: string;
   };

@@ -18,7 +18,6 @@ export class UserRepository
 
   public async findAll(params: UserQuery): Promise<User[] | null> {
     const users = this.userModel.find();
-    console.log('params', params);
 
     if (params.users) {
       users.where('_id').in(params.users.split(','));
@@ -40,15 +39,13 @@ export class UserRepository
     return this.userModel.findOne({ email }).exec();
   }
 
-  public async create(item: UserEntity): Promise<User> {
-    const newBlogUser = new this.userModel(item);
+  public async create(userData: UserEntity): Promise<User> {
+    const newBlogUser = new this.userModel(userData);
     return newBlogUser.save();
   }
 
-  public async update(id: string, item: UserEntity): Promise<User> {
-    return this.userModel
-      .findByIdAndUpdate(id, item.toObject(), { new: true })
-      .exec();
+  public async update(id: string, userData): Promise<User> {
+    return this.userModel.findByIdAndUpdate(id, userData, { new: true }).exec();
   }
 
   public async destroy(id: string): Promise<void> {

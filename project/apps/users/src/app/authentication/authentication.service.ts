@@ -62,10 +62,4 @@ export class AuthenticationService {
       }),
     };
   }
-
-  public async resetPassword(
-    userID: string,
-    oldPassword: string,
-    newPassword: string
-  ) {}
 }

@@ -9,12 +9,15 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostQuery } from './posts.query';
+import { LocalAuthGuard } from '@project/shared/guards';
+import { RequestWithUser } from '@project/shared/app-types';
 
 @ApiTags('Posts')
 @Controller('posts')
@@ -43,12 +46,18 @@ export class PostsController {
 
   // Create post
 
+  @UseGuards(LocalAuthGuard)
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Post successfully add',
   })
   @Post()
-  public async create(@Body() postData: CreatePostDto) {
+  public async create(
+    @Body() postData: CreatePostDto,
+    @Req() { user }: RequestWithUser
+  ) {
+    console.log('user', user);
+
     return await this.postsService.create(postData);
   }
 
