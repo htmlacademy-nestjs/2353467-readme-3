@@ -16,6 +16,14 @@ export class PostsRepository
   public async findAll(params: PostQuery): Promise<IPost[] | null> {
     const where: PostConditions = {};
 
+    where.published = true;
+
+    if (params.search) {
+      where.title = {
+        contains: params.search,
+      };
+    }
+
     if (params.tags) {
       where.tags = {
         some: {
@@ -102,13 +110,13 @@ export class PostsRepository
 
   // Repost
 
-  public async repost(id: number): Promise<void> {
+  public async repost(id: number, userID: string): Promise<void> {
     const post = await this.prisma.post.findFirst({
       where: { id },
     });
 
     this.prisma.post.create({
-      data: { ...post, userID: 's', originalUserID: post.userID },
+      data: { ...post, userID, originalUserID: post.userID },
     });
   }
 }

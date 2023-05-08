@@ -4,16 +4,19 @@ import { DEFAULT_POST_LIMIT, DEFAULT_SORT } from './posts.constant';
 import { PostType } from '@project/shared/app-types';
 
 export class PostQuery {
-  @Transform(({ value } ) => +value || DEFAULT_POST_LIMIT)
+  @Transform(({ value }) => Number(value) || DEFAULT_POST_LIMIT)
   @IsNumber()
   @IsOptional()
   public limit = DEFAULT_POST_LIMIT;
 
-  @Transform(({ value }) => +value)
+  @Transform(({ value }) => Number(value))
   @IsOptional()
   public page: number;
 
-  @Transform(({ value }) => value.split(',').map((id: string) => +id))
+  @IsOptional()
+  public search: string;
+
+  @Transform(({ value }) => value.split(',').map((id: string) => Number(id)))
   @IsArray({})
   @IsOptional()
   public tags: number[];

@@ -1,4 +1,13 @@
-import { BasePost, PostLink, PostPhoto, PostQuote, PostText, PostType, PostVideo, Tag } from "@project/shared/app-types";
+import {
+  BasePost,
+  PostLink,
+  PostPhoto,
+  PostQuote,
+  PostText,
+  PostType,
+  PostVideo,
+  Tag,
+} from '@project/shared/app-types';
 
 class BasePostEntity implements BasePost {
   public id: number;
@@ -24,18 +33,19 @@ class BasePostEntity implements BasePost {
   public toObject() {
     return {
       ...this,
-      tags: { connect: this.tags.map(tag => ({ id: tag })) },
+      tags: { connect: this.tags.map((tag) => ({ id: tag })) },
     };
   }
 }
 
 export class PostTextEntity extends BasePostEntity {
   public anonce: string;
+  public text: string;
 
   constructor(post: PostText) {
     super(post);
     this.type = PostType.Text;
-    this.data = { anonce: post.anonce };
+    this.data = { anonce: post.anonce, text: post.text };
   }
 }
 
@@ -61,11 +71,12 @@ export class PostPhotoEntity extends BasePostEntity {
 
 export class PostQuoteEntity extends BasePostEntity {
   public quote: string;
+  public author: string;
 
   constructor(post: PostQuote) {
     super(post);
     this.type = PostType.Quote;
-    this.data = { quote: post.quote };
+    this.data = { quote: post.quote, author: post.author };
   }
 }
 

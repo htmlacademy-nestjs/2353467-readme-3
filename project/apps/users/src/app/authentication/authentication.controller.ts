@@ -1,18 +1,25 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Req,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { fillObject } from '@project/util/util-core';
 import { AuthenticationService } from './authentication.service';
-import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { RequestWithUser } from '@project/shared/app-types';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
-  constructor(
-    private readonly authService: AuthenticationService
-  ) { }
+  constructor(private readonly authService: AuthenticationService) {}
 
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -22,11 +29,19 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.',
   })
-  @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() credentials: LoginUserDto) {
-    const user = await this.authService.verifyUser(credentials);
-    const loggedUser = await this.authService.createToken(user);
-    return fillObject(LoggedUserRdo, Object.assign(user, loggedUser));
+  public async login(@Req() { user }: RequestWithUser) {
+    return this.authService.createToken(user);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens',
+  })
+  public async refreshToken(@Req() { user }) {
+    return this.authService.createToken({ ...user, _id: user.id });
   }
 }

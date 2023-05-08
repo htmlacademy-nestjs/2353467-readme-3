@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Subscriber } from '@project/shared/app-types';
+import { CreateUserNotify } from '@project/shared/app-types';
 
 const SUBSCRIBERS_COLLECTION_NAME = 'email-subscribers';
 
@@ -8,7 +8,10 @@ const SUBSCRIBERS_COLLECTION_NAME = 'email-subscribers';
   collection: SUBSCRIBERS_COLLECTION_NAME,
   timestamps: true,
 })
-export class EmailSubscriberModel extends Document implements  Subscriber {
+export class CreateUserNotifyModel
+  extends Document
+  implements CreateUserNotify
+{
   @Prop()
   public email: string;
 
@@ -19,4 +22,6 @@ export class EmailSubscriberModel extends Document implements  Subscriber {
   public lastname: string;
 }
 
-export const EmailSubscriberSchema = SchemaFactory.createForClass(EmailSubscriberModel);
+export const CreateUserNotifySchema = SchemaFactory.createForClass(
+  CreateUserNotifyModel
+);

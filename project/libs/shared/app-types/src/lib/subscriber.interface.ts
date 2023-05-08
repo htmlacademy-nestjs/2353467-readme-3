@@ -1,12 +1,12 @@
 export interface Subscriber {
+  _id?: string;
+  subscriberID: string;
+  authorID: string;
+}
+
+export interface SubscribeAuthorNotify {
   id?: string;
   email: string;
   firstname: string;
   lastname: string;
-}
-
-export enum SubscriberValidations {
-  EmailNotValid = 'The email is not valid',
-  FirstNameIsEmpty = 'The first name is empty',
-  LastNameIsEmpty = 'The userId is empty',
 }

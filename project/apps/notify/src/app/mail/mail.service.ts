@@ -1,4 +1,4 @@
-import { Subscriber } from '@project/shared/app-types';
+import { CreateUserNotify } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { EMAIL_ADD_SUBSCRIBER_SUBJECT } from './mail.constant';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -7,7 +7,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 export class MailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  public async sendNotifyNewSubscriber(subscriber: Subscriber) {
+  public async sendNotifyNewSubscriber(subscriber: CreateUserNotify) {
     await this.mailerService.sendMail({
       to: subscriber.email,
       subject: EMAIL_ADD_SUBSCRIBER_SUBJECT,

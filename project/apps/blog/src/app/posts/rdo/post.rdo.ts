@@ -1,6 +1,12 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { BasePost, Like, PostType, Tag, Comment } from "@project/shared/app-types";
-import { Expose } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  BasePost,
+  Like,
+  PostType,
+  Tag,
+  Comment,
+} from '@project/shared/app-types';
+import { Expose } from 'class-transformer';
 
 class BasePostRdo implements BasePost {
   @ApiProperty({ description: 'Post ID' })
@@ -49,9 +55,13 @@ class BasePostRdo implements BasePost {
 }
 
 export class PostTextRdo extends BasePostRdo {
-  @ApiProperty({ description: 'Text anonce\'s' })
+  @ApiProperty({ description: "Text anonce's" })
   @Expose()
   public anonce: string;
+
+  @ApiProperty({ description: 'Text post' })
+  @Expose()
+  public text: string;
 }
 
 export class PostVideoRdo extends BasePostRdo {
@@ -70,6 +80,10 @@ export class PostQuoteRdo extends BasePostRdo {
   @ApiProperty({ description: 'Quote' })
   @Expose()
   public quote: string;
+
+  @ApiProperty({ description: 'Author quote' })
+  @Expose()
+  public author: string;
 }
 
 export class PostLinkRdo extends BasePostRdo {
@@ -83,4 +97,4 @@ export type PostRdo =
   | PostVideoRdo
   | PostPhotoRdo
   | PostQuoteRdo
-  | PostLinkRdo
+  | PostLinkRdo;
