@@ -14,7 +14,6 @@ import { MongoidValidationPipe } from '@project/shared/pipes';
 import { SubscriberService } from './subscriber.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
-import { TokenPayload } from '@project/shared/app-types';
 
 @ApiTags('Subscriber')
 @Controller('subscribers')

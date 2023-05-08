@@ -16,7 +16,7 @@ import { PostsService } from './posts.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostQuery } from './posts.query';
-import { LocalAuthGuard } from '@project/shared/guards';
+import { JwtAuthGuard } from '@project/shared/guards';
 import { RequestWithUser } from '@project/shared/app-types';
 
 @ApiTags('Posts')
@@ -24,13 +24,23 @@ import { RequestWithUser } from '@project/shared/app-types';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get my feeds',
+  })
+  @Get('/feed')
+  public async feed() {
+    console.log('feed');
+  }
+
   // Get all posts
 
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'List posts',
   })
-  @Get('/')
+  @Get()
   public async findAll(@Query() params: PostQuery) {
     return await this.postsService.findAll(params);
   }
@@ -46,7 +56,7 @@ export class PostsController {
 
   // Create post
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Post successfully add',
