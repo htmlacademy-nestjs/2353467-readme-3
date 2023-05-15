@@ -2,11 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { NotifyValidation } from '../validations/notify.validation';
-
-const DEFAULT_PORT = 3000;
-const DEFAULT_MONGO_PORT = 27020;
-const DEFAULT_RABBIT_PORT = 5672;
-const DEFAULT_SMTP_PORT = 25;
+import { Ports } from '../notify-ports';
 
 export interface NotifyConfig {
   environment: string;
@@ -39,11 +35,11 @@ export interface NotifyConfig {
 export default registerAs('notify', (): NotifyConfig => {
   const config: NotifyConfig = {
     environment: process.env.NODE_ENV,
-    port: parseInt(process.env.PORT || DEFAULT_PORT.toString(), 10),
+    port: parseInt(process.env.PORT || Ports.DefaultAppPort.toString(), 10),
     db: {
       host: process.env.MONGO_HOST,
       port: parseInt(
-        process.env.MONGO_PORT ?? DEFAULT_MONGO_PORT.toString(),
+        process.env.MONGO_PORT ?? Ports.DefaultMongoPort.toString(),
         10
       ),
       name: process.env.MONGO_DB,
@@ -54,7 +50,7 @@ export default registerAs('notify', (): NotifyConfig => {
     rabbit: {
       host: process.env.RABBIT_HOST,
       port: parseInt(
-        process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(),
+        process.env.RABBIT_PORT ?? Ports.DefaultRabbitPort.toString(),
         10
       ),
       user: process.env.RABBIT_USER,
@@ -65,7 +61,7 @@ export default registerAs('notify', (): NotifyConfig => {
     mail: {
       host: process.env.MAIL_SMTP_HOST,
       port: parseInt(
-        process.env.MAIL_SMTP_PORT ?? DEFAULT_SMTP_PORT.toString(),
+        process.env.MAIL_SMTP_PORT ?? Ports.DefaultSMTPPort.toString(),
         10
       ),
       user: process.env.MAIL_USER_NAME,
