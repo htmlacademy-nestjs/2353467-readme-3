@@ -26,6 +26,7 @@
       "@project/shared/app-types": ["libs/shared/app-types/src/index.ts"],
       "@project/shared/guards": ["libs/shared/guards/src/index.ts"],
       "@project/shared/pipes": ["libs/shared/pipes/src/index.ts"],
+      "@project/shared/ports": ["libs/shared/ports/src/index.ts"],
       "@project/util/util-core": ["libs/util/util-core/src/index.ts"],
       "@project/util/util-types": ["libs/util/util-types/src/index.ts"]
     }
